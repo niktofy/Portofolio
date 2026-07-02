@@ -250,34 +250,28 @@
 
       <!-- Case Study 1 -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div class="mockup h-64 sm:h-80">
-          <div class="relative z-10 h-full flex flex-col justify-between p-6">
-            <div class="flex gap-2">
-              <span class="chip text-xs px-2 py-1 rounded">LEGENDARY_GPU</span>
-              <span class="chip text-xs px-2 py-1 rounded">RARE_GPU</span>
-            </div>
-            <div>
-              <div class="h-2 rounded-full bg-white/10 mb-2 overflow-hidden"><div class="h-full w-3/4 rounded-full" style="background:linear-gradient(90deg,var(--pink),var(--cyan))"></div></div>
-              <p class="font-mono text-xs text-[var(--muted)]">hashrate: 74.2 TH/s</p>
-            </div>
-          </div>
+        <div class="flex justify-center">
+          <a href="demos/miner.html" class="cursor-pointer" style="max-width:280px"><img src="assets/miner.png" alt="NeonMiner Telegram Mini App — multi-coin wallet with BTC, LTC and USDT balances, deposit and withdraw buttons, tiered GPU mining rigs" class="shot" loading="lazy"></a>
         </div>
         <div>
-          <span class="chip px-3 py-1 rounded inline-block mb-4">personal_project</span>
+          <span class="chip px-3 py-1 rounded inline-block mb-4">telegram_mini_app</span>
           <h3 class="font-display text-xl font-bold mb-3">Crypto Mining Simulator — Telegram Mini App</h3>
           <p class="text-[var(--muted)] leading-relaxed mb-4">
             <span class="text-white">Challenge:</span> an idle-mining game that feels premium — neon assets,
             octane-render style — while staying light enough for Telegram WebViews.
           </p>
           <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> tiered GPU progression system (Basic → Legendary), full
-            neon pink &amp; cyan art direction, rendering stack evaluated for 60fps performance budgets.
+            <span class="text-white">Result:</span> full game economy with a <span class="text-white">multi-coin
+            wallet — BTC, LTC &amp; USDT — with deposit and withdraw flows</span>, tiered GPU progression
+            (Rare → Epic → Legendary) with per-rig earning rates, and neon pink &amp; cyan art direction
+            engineered for 60fps.
           </p>
-          <div class="flex flex-wrap gap-2">
+          <div class="flex flex-wrap gap-2 mb-5">
             <span class="chip px-3 py-1 rounded">telegram-sdk</span>
-            <span class="chip px-3 py-1 rounded">three.js</span>
+            <span class="chip px-3 py-1 rounded">btc/ltc/usdt</span>
             <span class="chip px-3 py-1 rounded">game-design</span>
           </div>
+          <a href="demos/miner.html" class="btn-primary text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-200 cursor-pointer inline-block">Open UI demo →</a>
         </div>
       </div>
 
@@ -314,19 +308,21 @@
           <a href="demos/neonhud.html" class="cursor-pointer"><img src="assets/neonhud.png" alt="NeonHUD — real-time mining ops dashboard with animated hashrate chart, live stats and rig status table" class="shot" loading="lazy"></a>
         </div>
         <div>
-          <span class="chip px-3 py-1 rounded inline-block mb-4">live_demo</span>
-          <h3 class="font-display text-xl font-bold mb-3">NeonHUD — Real-Time Ops Dashboard</h3>
+          <span class="chip px-3 py-1 rounded inline-block mb-4">live_demo — real data</span>
+          <h3 class="font-display text-xl font-bold mb-3">NeonHUD — Live Crypto Markets Dashboard</h3>
           <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Challenge:</span> prove a production-quality live dashboard can run from
-            a single HTML file — no server, no build pipeline.
+            <span class="text-white">Challenge:</span> build a dashboard on <span class="text-white">real
+            market data</span> — live prices, not mockups — that still runs from a single HTML file.
           </p>
           <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> 4-panel HUD with live stat counters, streaming 24h chart
-            and rig temperature monitoring — updating every 2.5s, entirely in-browser.
+            <span class="text-white">Result:</span> live BTC/ETH/SOL/LTC/TON/DOGE prices and 24h changes from
+            the CoinGecko API, a streaming Bitcoin chart, auto-refresh every 60s — with a graceful simulated
+            fallback if the API is unreachable.
           </p>
           <div class="flex flex-wrap gap-2 mb-5">
-            <span class="chip px-3 py-1 rounded">javascript</span>
+            <span class="chip px-3 py-1 rounded">rest-api</span>
             <span class="chip px-3 py-1 rounded">chart.js</span>
+            <span class="chip px-3 py-1 rounded">real-time</span>
             <span class="chip px-3 py-1 rounded">zero-backend</span>
           </div>
           <a href="demos/neonhud.html" class="btn-primary text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-200 cursor-pointer inline-block">Open live demo →</a>
@@ -340,14 +336,15 @@
         </div>
         <div class="md:order-1">
           <span class="chip px-3 py-1 rounded inline-block mb-4">open_source</span>
-          <h3 class="font-display text-xl font-bold mb-3">InvoiceForge — Python Invoice CLI</h3>
+          <h3 class="font-display text-xl font-bold mb-3">InvoiceForge — Automatic Invoice Generator</h3>
           <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Challenge:</span> freelancers waste time hand-making invoices or pay
-            monthly for what is a template plus a counter.
+            <span class="text-white">Challenge:</span> every freelancer needs to send clients an invoice to
+            get paid — but making them by hand in Word looks unprofessional, and invoice apps cost $10+/month.
           </p>
           <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> one command → one styled, print-ready invoice.
-            Auto-numbering, configurable branding, zero dependencies — stdlib only.
+            <span class="text-white">Result:</span> a Python tool that builds the invoice for you — type one
+            command with the client name and the work done, get back a numbered, branded, print-ready
+            invoice like the one pictured. I use it for my own clients.
           </p>
           <div class="flex flex-wrap gap-2 mb-5">
             <span class="chip px-3 py-1 rounded">python</span>
