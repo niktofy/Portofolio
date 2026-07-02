@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeonHUD — Mining Ops Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0B0B1E; --panel:#12122b; --border:rgba(124,58,237,.22);
+    --primary:#7C3AED; --cyan:#22D3EE; --pink:#F43F5E; --green:#34D399;
+    --text:#E2E8F0; --muted:#8B93A7;
+  }
+  *{box-sizing:border-box; margin:0;}
+  body{background:var(--bg); color:var(--text); font-family:'Exo 2',sans-serif; min-height:100vh; padding:24px;}
+  .font-d{font-family:'Orbitron',sans-serif;}
+  .grid{display:grid; gap:18px; max-width:1200px; margin:0 auto;}
+  header.grid{grid-template-columns:1fr auto; align-items:center;}
+  .stats{grid-template-columns:repeat(auto-fit,minmax(210px,1fr));}
+  .main{grid-template-columns:2fr 1fr;}
+  @media(max-width:900px){.main{grid-template-columns:1fr;}}
+  .panel{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:20px;}
+  .panel:hover{border-color:rgba(124,58,237,.45);}
+  h1{font-size:22px; letter-spacing:.12em;}
+  h1 .dot{color:var(--cyan);}
+  .sub{color:var(--muted); font-size:13px;}
+  .badge{display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(52,211,153,.4); color:var(--green); font-size:12px; padding:6px 14px; border-radius:999px;}
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--green); animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .stat .label{color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.1em;}
+  .stat .value{font-family:'Orbitron'; font-size:26px; margin-top:6px; text-shadow:0 0 14px rgba(34,211,238,.4);}
+  .stat .delta{font-size:12px; margin-top:4px;}
+  .up{color:var(--green);} .down{color:var(--pink);}
+  .bar{height:8px; border-radius:999px; background:rgba(255,255,255,.07); overflow:hidden; margin-top:10px;}
+  .bar i{display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--primary),var(--cyan)); transition:width .8s ease;}
+  table{width:100%; border-collapse:collapse; font-size:14px;}
+  th{color:var(--muted); font-weight:500; text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.08em; padding:8px 6px; border-bottom:1px solid var(--border);}
+  td{padding:10px 6px; border-bottom:1px solid rgba(255,255,255,.04);}
+  .tag{font-size:11px; padding:3px 10px; border-radius:999px;}
+  .tag.ok{background:rgba(52,211,153,.12); color:var(--green);}
+  .tag.warn{background:rgba(244,63,94,.12); color:var(--pink);}
+  .rig{font-family:'Orbitron'; font-size:13px;}
+  canvas{max-height:260px;}
+  footer{max-width:1200px; margin:18px auto 0; color:var(--muted); font-size:12px; text-align:center;}
+</style>
+</head>
+<body>
+<div class="grid" style="gap:18px">
+
+  <header class="grid panel" style="border-radius:16px">
+    <div>
+      <h1 class="font-d">NEON<span class="dot">HUD</span></h1>
+      <p class="sub">Mining operations · demo environment · simulated data</p>
+    </div>
+    <span class="badge"><span class="pulse"></span> LIVE FEED</span>
+  </header>
+
+  <section class="grid stats">
+    <div class="panel stat">
+      <p class="label">Total Hashrate</p>
+      <p class="value" id="hashrate">0 TH/s</p>
+      <p class="delta up" id="hashdelta">▲ 0.0%</p>
+    </div>
+    <div class="panel stat">
+      <p class="label">Daily Revenue</p>
+      <p class="value" id="revenue">$0</p>
+      <p class="delta up" id="revdelta">▲ 0.0%</p>
+    </div>
+    <div class="panel stat">
+      <p class="label">Active Rigs</p>
+      <p class="value" id="rigs">0 / 12</p>
+      <p class="delta sub">2 in maintenance</p>
+    </div>
+    <div class="panel stat">
+      <p class="label">Power Efficiency</p>
+      <p class="value" id="eff">0 J/TH</p>
+      <div class="bar"><i id="effbar" style="width:0%"></i></div>
+    </div>
+  </section>
+
+  <section class="grid main">
+    <div class="panel">
+      <p class="label sub" style="text-transform:uppercase;letter-spacing:.1em;font-size:12px;margin-bottom:12px">Hashrate — last 24h</p>
+      <canvas id="chart"></canvas>
+    </div>
+    <div class="panel">
+      <p class="label sub" style="text-transform:uppercase;letter-spacing:.1em;font-size:12px;margin-bottom:12px">Rig Status</p>
+      <table>
+        <thead><tr><th>Rig</th><th>Temp</th><th>Status</th></tr></thead>
+        <tbody id="rigtable"></tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+<footer>NeonHUD demo · built by Vadim Melnic · all data simulated in-browser, no backend required</footer>
+
+<script>
+  const rand=(a,b)=>a+Math.random()*(b-a);
+  const fmt=(n,d=1)=>n.toFixed(d);
+
+  // --- stats ---
+  let hash=74.2, rev=312, eff=21.5;
+  function tickStats(){
+    hash=Math.max(60,Math.min(90,hash+rand(-1.2,1.4)));
+    rev=Math.max(250,Math.min(400,rev+rand(-6,7)));
+    eff=Math.max(18,Math.min(26,eff+rand(-.4,.4)));
+    document.getElementById('hashrate').textContent=fmt(hash)+' TH/s';
+    document.getElementById('revenue').textContent='$'+fmt(rev,0);
+    document.getElementById('rigs').textContent='10 / 12';
+    document.getElementById('eff').textContent=fmt(eff)+' J/TH';
+    document.getElementById('effbar').style.width=fmt(100-(eff-18)/8*100,0)+'%';
+    const hd=document.getElementById('hashdelta'), rd=document.getElementById('revdelta');
+    const h=rand(-2,3), r=rand(-2,3);
+    hd.textContent=(h>=0?'▲ ':'▼ ')+fmt(Math.abs(h))+'%'; hd.className='delta '+(h>=0?'up':'down');
+    rd.textContent=(r>=0?'▲ ':'▼ ')+fmt(Math.abs(r))+'%'; rd.className='delta '+(r>=0?'up':'down');
+  }
+
+  // --- chart ---
+  const labels=[...Array(24)].map((_,i)=>(i)+':00');
+  const data=labels.map(()=>rand(62,88));
+  const ctx=document.getElementById('chart');
+  const grad=ctx.getContext('2d').createLinearGradient(0,0,0,260);
+  grad.addColorStop(0,'rgba(124,58,237,.45)'); grad.addColorStop(1,'rgba(124,58,237,0)');
+  const chart=new Chart(ctx,{type:'line',data:{labels,datasets:[{data,fill:true,backgroundColor:grad,borderColor:'#22D3EE',borderWidth:2,pointRadius:0,tension:.35}]},
+    options:{plugins:{legend:{display:false}},scales:{
+      x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#8B93A7',maxTicksLimit:8}},
+      y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{color:'#8B93A7',callback:v=>v+' TH'}}},
+      animation:{duration:600}}});
+
+  // --- rig table ---
+  const rigs=['ALPHA-01','ALPHA-02','BETA-01','BETA-02','GAMMA-01','GAMMA-02'];
+  function tickRigs(){
+    document.getElementById('rigtable').innerHTML=rigs.map(r=>{
+      const t=rand(52,84), ok=t<75;
+      return `<tr><td class="rig">${r}</td><td>${fmt(t,0)}°C</td>
+        <td><span class="tag ${ok?'ok':'warn'}">${ok?'MINING':'HOT'}</span></td></tr>`;
+    }).join('');
+  }
+
+  function tickChart(){
+    data.push(hash+rand(-2,2)); data.shift();
+    chart.update();
+  }
+
+  tickStats(); tickRigs();
+  setInterval(tickStats,2500); setInterval(tickRigs,4000); setInterval(tickChart,2500);
+</script>
+</body>
+</html>
