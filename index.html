@@ -6,137 +6,168 @@
 <title>Vadim Melnic — Full-Stack Developer</title>
 <meta name="description" content="Vadim Melnic — Full-stack developer specializing in Telegram Mini Apps, Python automation and interactive dashboards.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
 <style>
   :root{
-    --bg:#0F0F23;
-    --bg-2:#15152e;
-    --primary:#7C3AED;
-    --secondary:#A78BFA;
-    --cta:#F43F5E;
-    --cyan:#22D3EE;
-    --text:#E2E8F0;
-    --muted:#94A3B8;
+    --bg:#06060F;
+    --panel:rgba(255,255,255,0.025);
+    --pink:#FF2E88;
+    --cyan:#00E5FF;
+    --text:#EDEDF7;
+    --muted:#9298AC;
+    --border:rgba(255,46,136,0.18);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     background:var(--bg);
     color:var(--text);
-    font-family:'Exo 2', sans-serif;
+    font-family:'Space Grotesk', sans-serif;
     overflow-x:hidden;
   }
-  .font-display{font-family:'Orbitron', sans-serif;}
+  .font-display{font-family:'Unbounded', sans-serif;}
+  .font-mono{font-family:'JetBrains Mono', monospace;}
   .bg-grid{
     background-image:
-      linear-gradient(rgba(124,58,237,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(124,58,237,0.08) 1px, transparent 1px);
-    background-size:40px 40px;
+      linear-gradient(rgba(255,46,136,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.05) 1px, transparent 1px);
+    background-size:44px 44px;
   }
-  .glow-text{ text-shadow: 0 0 10px rgba(167,139,250,0.6), 0 0 24px rgba(124,58,237,0.35); }
-  .glow-text-cyan{ text-shadow: 0 0 10px rgba(34,211,238,0.6), 0 0 24px rgba(34,211,238,0.3); }
-  .gradient-text{
-    background: linear-gradient(90deg, var(--secondary), var(--cyan));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+  .glitch{position:relative; display:inline-block;}
+  .glitch:hover{animation:glitch .35s steps(2) 2;}
+  @keyframes glitch{
+    0%{text-shadow:3px 0 var(--pink), -3px 0 var(--cyan);}
+    50%{text-shadow:-3px 0 var(--pink), 3px 0 var(--cyan);}
+    100%{text-shadow:none;}
   }
+  .accent-pink{color:var(--pink); text-shadow:0 0 18px rgba(255,46,136,.45);}
+  .accent-cyan{color:var(--cyan); text-shadow:0 0 18px rgba(0,229,255,.45);}
+  .section-tag{font-family:'JetBrains Mono',monospace; color:var(--cyan); font-size:13px; letter-spacing:.08em;}
   .card{
-    background: rgba(255,255,255,0.03);
-    border:1px solid rgba(167,139,250,0.15);
-    backdrop-filter: blur(6px);
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,0.07);
+    border-left:2px solid var(--border);
+    transition:border-color .2s, box-shadow .2s;
   }
   .card:hover{
-    border-color: rgba(167,139,250,0.5);
-    box-shadow: 0 0 30px rgba(124,58,237,0.15);
+    border-left-color:var(--pink);
+    box-shadow:-6px 0 24px -8px rgba(255,46,136,.35);
   }
   .btn-primary{
-    background: linear-gradient(90deg, var(--primary), var(--cta));
-    box-shadow: 0 0 20px rgba(124,58,237,0.4);
+    background:linear-gradient(90deg, var(--pink), #ff5aa5);
+    box-shadow:0 0 24px rgba(255,46,136,.35);
+    color:#fff;
   }
-  .btn-primary:hover{ box-shadow: 0 0 30px rgba(244,63,94,0.55); transform: translateY(-1px); }
-  .btn-outline{
-    border:1px solid rgba(167,139,250,0.4);
-  }
-  .btn-outline:hover{ border-color: var(--secondary); background: rgba(124,58,237,0.08); }
+  .btn-primary:hover{box-shadow:0 0 36px rgba(255,46,136,.6); transform:translateY(-1px);}
+  .btn-outline{border:1px solid rgba(0,229,255,.4); color:var(--text);}
+  .btn-outline:hover{border-color:var(--cyan); background:rgba(0,229,255,.07);}
   .chip{
-    border:1px solid rgba(148,163,184,0.25);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    border:1px solid rgba(146,152,172,.3);
     color:var(--muted);
-    background: rgba(255,255,255,0.02);
+    background:rgba(255,255,255,.02);
   }
+  /* Terminal */
+  .terminal{
+    background:#0A0A18;
+    border:1px solid rgba(0,229,255,.25);
+    border-radius:12px;
+    box-shadow:0 0 40px -10px rgba(0,229,255,.25);
+    font-family:'JetBrains Mono',monospace;
+    font-size:13.5px;
+  }
+  .terminal-bar{
+    display:flex; align-items:center; gap:6px;
+    padding:10px 14px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .terminal-bar i{width:11px;height:11px;border-radius:50%;display:block;}
+  .t-body{padding:16px 18px; min-height:180px; line-height:1.8;}
+  .t-prompt{color:var(--pink);}
+  .t-out{color:var(--muted);}
+  .t-ok{color:#3DFF9E;}
+  .caret{display:inline-block;width:8px;height:15px;background:var(--cyan);vertical-align:-2px;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
   .mockup{
-    position:relative;
-    border-radius:14px;
-    overflow:hidden;
-    border:1px solid rgba(167,139,250,0.25);
+    position:relative; border-radius:12px; overflow:hidden;
+    border:1px solid rgba(0,229,255,.2);
+    background:#0A0A18;
   }
   .mockup::before{
-    content:"";
-    position:absolute; inset:0;
-    background: radial-gradient(circle at 30% 20%, rgba(124,58,237,0.35), transparent 60%),
-                radial-gradient(circle at 80% 80%, rgba(34,211,238,0.25), transparent 55%);
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 25% 15%, rgba(255,46,136,.28), transparent 55%),
+               radial-gradient(circle at 85% 85%, rgba(0,229,255,.22), transparent 55%);
   }
-  .reveal{ opacity:0; transform: translateY(24px); }
-  ::selection{ background: rgba(124,58,237,0.4); }
+  .reveal{opacity:0; transform:translateY(24px);}
+  ::selection{background:rgba(255,46,136,.4);}
   .nav-blur{
-    background: rgba(15,15,35,0.7);
-    backdrop-filter: blur(10px);
-    border:1px solid rgba(167,139,250,0.15);
+    background:rgba(6,6,15,0.75);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.07);
   }
+  .stat-num{font-family:'Unbounded'; font-weight:700;}
   @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-    .reveal{ opacity:1; transform:none; }
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1; transform:none;}
+    .caret{animation:none;}
+    .glitch:hover{animation:none;}
   }
 </style>
 </head>
-<body class="bg-[var(--bg)]">
+<body>
 
 <!-- NAV -->
 <header class="fixed top-4 left-4 right-4 z-50 flex justify-center">
-  <nav class="nav-blur rounded-full px-4 sm:px-6 py-3 flex items-center justify-between w-full max-w-5xl">
-    <a href="#top" class="font-display font-bold tracking-widest text-lg glow-text">VM<span class="text-[var(--cyan)]">.</span></a>
-    <div class="hidden md:flex items-center gap-8 text-sm text-[var(--muted)]">
-      <a href="#about" class="hover:text-white transition-colors duration-200 cursor-pointer">About</a>
-      <a href="#work" class="hover:text-white transition-colors duration-200 cursor-pointer">Case Studies</a>
-      <a href="#services" class="hover:text-white transition-colors duration-200 cursor-pointer">Services</a>
-      <a href="#skills" class="hover:text-white transition-colors duration-200 cursor-pointer">Skills</a>
+  <nav class="nav-blur rounded-xl px-4 sm:px-6 py-3 flex items-center justify-between w-full max-w-5xl">
+    <a href="#top" class="font-mono font-bold text-lg"><span class="accent-pink">vadim</span><span class="text-white">@</span><span class="accent-cyan">dev</span><span class="text-white">:~$</span></a>
+    <div class="hidden md:flex items-center gap-8 font-mono text-[13px] text-[var(--muted)]">
+      <a href="#about" class="hover:text-white transition-colors duration-200 cursor-pointer">./about</a>
+      <a href="#work" class="hover:text-white transition-colors duration-200 cursor-pointer">./work</a>
+      <a href="#services" class="hover:text-white transition-colors duration-200 cursor-pointer">./services</a>
+      <a href="#skills" class="hover:text-white transition-colors duration-200 cursor-pointer">./skills</a>
     </div>
-    <a href="#contact" class="btn-primary text-white text-sm font-medium px-4 sm:px-5 py-2 rounded-full transition-all duration-200 cursor-pointer">Hire Me</a>
+    <a href="#contact" class="btn-primary font-mono text-[13px] font-medium px-4 sm:px-5 py-2 rounded-lg transition-all duration-200 cursor-pointer">hire --now</a>
   </nav>
 </header>
 
 <!-- HERO -->
 <section id="top" class="bg-grid min-h-screen flex items-center relative pt-32 pb-20 px-6">
-  <div class="max-w-5xl mx-auto w-full">
-    <p class="reveal font-display text-[var(--cyan)] text-sm tracking-[0.3em] mb-4">FULL-STACK DEVELOPER · AVAILABLE FOR FREELANCE</p>
-    <h1 class="reveal font-display font-800 text-5xl sm:text-7xl leading-tight mb-6">
-      Vadim <span class="gradient-text">Melnic</span>
-    </h1>
-    <p class="reveal text-lg sm:text-xl text-[var(--muted)] max-w-2xl mb-10 leading-relaxed">
-      I build <span class="text-white">Telegram Mini Apps</span>, <span class="text-white">Python automation tools</span>
-      and <span class="text-white">interactive dashboards</span> with a distinct cyberpunk/neon visual identity —
-      from concept to shipped product.
-    </p>
-    <div class="reveal flex flex-wrap gap-4 mb-16">
-      <a href="#work" class="btn-primary text-white font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer">View Case Studies</a>
-      <a href="#contact" class="btn-outline text-white font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer">Get In Touch</a>
-    </div>
-    <div class="reveal grid grid-cols-3 max-w-xl gap-6 border-t border-white/10 pt-8">
-      <div>
-        <p class="font-display text-3xl font-bold glow-text-cyan">7</p>
-        <p class="text-sm text-[var(--muted)]">Shipped projects</p>
-      </div>
-      <div>
-        <p class="font-display text-3xl font-bold glow-text-cyan">2</p>
-        <p class="text-sm text-[var(--muted)]">Core stacks: Python & JS</p>
-      </div>
-      <div>
-        <p class="font-display text-3xl font-bold glow-text-cyan">100%</p>
-        <p class="text-sm text-[var(--muted)]">Design + build, solo</p>
+  <div class="max-w-5xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center">
+    <div>
+      <p class="reveal section-tag mb-4">// full-stack developer — available for freelance</p>
+      <h1 class="reveal font-display font-black text-4xl sm:text-6xl leading-tight mb-6">
+        <span class="glitch">Vadim</span><br><span class="glitch accent-pink">Melnic</span>
+      </h1>
+      <p class="reveal text-lg text-[var(--muted)] max-w-md mb-8 leading-relaxed">
+        I build <span class="text-white">Telegram Mini Apps</span>, <span class="text-white">Python automation</span>
+        and <span class="text-white">live dashboards</span> — from visual concept to shipped product.
+      </p>
+      <div class="reveal flex flex-wrap gap-4">
+        <a href="#work" class="btn-primary font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">View work</a>
+        <a href="#contact" class="btn-outline font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">Get in touch</a>
       </div>
     </div>
+
+    <!-- Terminal -->
+    <div class="reveal terminal">
+      <div class="terminal-bar">
+        <i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i>
+        <span class="ml-2 text-[var(--muted)] text-xs">vadim@dev — zsh</span>
+      </div>
+      <div class="t-body" id="term"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="py-10 px-6 border-t border-white/5">
+  <div class="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+    <div><p class="stat-num text-3xl accent-cyan">7</p><p class="font-mono text-xs text-[var(--muted)] mt-2">projects_shipped</p></div>
+    <div><p class="stat-num text-3xl accent-cyan">5</p><p class="font-mono text-xs text-[var(--muted)] mt-2">specialty_areas</p></div>
+    <div><p class="stat-num text-3xl accent-cyan">&lt;24h</p><p class="font-mono text-xs text-[var(--muted)] mt-2">response_time</p></div>
+    <div><p class="stat-num text-3xl accent-cyan">3</p><p class="font-mono text-xs text-[var(--muted)] mt-2">languages</p></div>
   </div>
 </section>
 
@@ -144,25 +175,22 @@
 <section id="about" class="py-24 px-6 border-t border-white/5">
   <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-10">
     <div>
-      <p class="font-display text-[var(--cyan)] text-sm tracking-[0.3em] mb-3">ABOUT</p>
-      <h2 class="font-display text-3xl font-bold">Who I am</h2>
+      <p class="section-tag mb-3">// 01 — about</p>
+      <h2 class="font-display text-2xl font-bold">Who I am</h2>
     </div>
     <div class="md:col-span-2 text-[var(--muted)] leading-relaxed space-y-4 text-lg">
       <p>
-        I'm Vadim Melnic, a self-taught full-stack developer who likes building things end to end —
-        from the visual concept to the working product. My recent focus has been on
-        <span class="text-white">Telegram Mini Apps</span>, lightweight <span class="text-white">Python tools</span>
-        that automate repetitive work, and <span class="text-white">gamified dashboards</span> that make
-        tracking progress feel less like a chore.
+        I'm Vadim Melnic, a self-taught full-stack developer who owns projects end to end —
+        visual concept, art direction, and the working build. One person accountable for the
+        final result, not a relay race.
       </p>
       <p>
-        I have a strong eye for a specific aesthetic — dark UI, neon accents, glow and motion — and I
-        pair that with practical engineering: clean state management, responsive layouts, and
-        interfaces that stay fast even on low-end devices (important for Telegram WebViews).
+        My signature: dark neon interfaces — <span class="accent-pink">pink</span> &amp; <span class="accent-cyan">cyan</span> —
+        engineered to stay fast on low-end devices. That matters for Telegram WebViews,
+        where most of my work lives.
       </p>
       <p>
-        I'm now opening up availability for freelance work on Fiverr and Upwork — happy to jump into
-        a new mini app, an automation script, or a dashboard build.
+        Currently open for freelance on Fiverr and Upwork: mini apps, automation scripts, dashboards.
       </p>
     </div>
   </div>
@@ -171,32 +199,32 @@
 <!-- SERVICES -->
 <section id="services" class="py-24 px-6 border-t border-white/5">
   <div class="max-w-5xl mx-auto">
-    <p class="font-display text-[var(--cyan)] text-sm tracking-[0.3em] mb-3">SERVICES</p>
-    <h2 class="font-display text-3xl font-bold mb-12">What I can build for you</h2>
+    <p class="section-tag mb-3">// 02 — services</p>
+    <h2 class="font-display text-2xl font-bold mb-12">What I can build for you</h2>
     <div class="grid sm:grid-cols-2 gap-6">
 
-      <div class="card rounded-2xl p-6 transition-all duration-200">
-        <svg class="w-8 h-8 text-[var(--cyan)] mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg>
-        <h3 class="font-display font-semibold text-lg mb-2">Telegram Mini Apps &amp; Web Games</h3>
-        <p class="text-[var(--muted)] text-sm leading-relaxed">Interactive TMAs built with the Telegram SDK, Three.js/PixiJS rendering, haptics and smooth 60fps UI on mobile WebViews.</p>
+      <div class="card rounded-xl p-6">
+        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg>
+        <h3 class="font-display text-base font-bold mb-2">Telegram Mini Apps &amp; Games</h3>
+        <p class="text-[var(--muted)] text-sm leading-relaxed">Interactive TMAs with Telegram SDK, Three.js/PixiJS rendering, haptics — 60fps even on budget phones.</p>
       </div>
 
-      <div class="card rounded-2xl p-6 transition-all duration-200">
-        <svg class="w-8 h-8 text-[var(--cyan)] mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m11-5v3a2 2 0 0 1-2 2h-3"/><path d="M9 9h6v6H9z"/></svg>
-        <h3 class="font-display font-semibold text-lg mb-2">Python Automation &amp; Scripting</h3>
-        <p class="text-[var(--muted)] text-sm leading-relaxed">Custom scripts and assistants that remove repetitive manual work — from file/task automation to lightweight CLI tools.</p>
+      <div class="card rounded-xl p-6">
+        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 17l6-5-6-5"/><path d="M12 19h8"/></svg>
+        <h3 class="font-display text-base font-bold mb-2">Python Automation &amp; CLI</h3>
+        <p class="text-[var(--muted)] text-sm leading-relaxed">Scripts and assistants that kill repetitive work — zero-dependency, documented, extensible per client.</p>
       </div>
 
-      <div class="card rounded-2xl p-6 transition-all duration-200">
-        <svg class="w-8 h-8 text-[var(--cyan)] mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
-        <h3 class="font-display font-semibold text-lg mb-2">Interactive Dashboards</h3>
-        <p class="text-[var(--muted)] text-sm leading-relaxed">Productivity &amp; data dashboards with task tracking, progress visualization and gamified reward systems.</p>
+      <div class="card rounded-xl p-6">
+        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+        <h3 class="font-display text-base font-bold mb-2">Live Dashboards</h3>
+        <p class="text-[var(--muted)] text-sm leading-relaxed">Real-time dashboards with animated charts — single-file, no backend required. See the live demo below.</p>
       </div>
 
-      <div class="card rounded-2xl p-6 transition-all duration-200">
-        <svg class="w-8 h-8 text-[var(--cyan)] mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18"/></svg>
-        <h3 class="font-display font-semibold text-lg mb-2">UI/UX &amp; Motion Design</h3>
-        <p class="text-[var(--muted)] text-sm leading-relaxed">Dark, neon, cyberpunk-leaning visual identities with purposeful micro-animations (Anime.js/GSAP).</p>
+      <div class="card rounded-xl p-6">
+        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18"/></svg>
+        <h3 class="font-display text-base font-bold mb-2">UI/UX &amp; Motion</h3>
+        <p class="text-[var(--muted)] text-sm leading-relaxed">Neon visual identities with purposeful micro-animations — Anime.js/GSAP, always respecting reduced-motion.</p>
       </div>
 
     </div>
@@ -206,121 +234,106 @@
 <!-- CASE STUDIES -->
 <section id="work" class="py-24 px-6 border-t border-white/5">
   <div class="max-w-5xl mx-auto">
-    <p class="font-display text-[var(--cyan)] text-sm tracking-[0.3em] mb-3">CASE STUDIES</p>
-    <h2 class="font-display text-3xl font-bold mb-2">Selected work</h2>
-    <p class="text-[var(--muted)] mb-12 max-w-2xl">Self-directed projects built to sharpen and demonstrate my stack — presented here as case studies.</p>
+    <p class="section-tag mb-3">// 03 — selected work</p>
+    <h2 class="font-display text-2xl font-bold mb-2">Case studies</h2>
+    <p class="text-[var(--muted)] mb-12 max-w-2xl">Self-directed projects built to sharpen and demonstrate my stack.</p>
 
     <div class="space-y-16">
 
       <!-- Case Study 1 -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div class="mockup h-64 sm:h-80 bg-[var(--bg-2)]">
+        <div class="mockup h-64 sm:h-80">
           <div class="relative z-10 h-full flex flex-col justify-between p-6">
             <div class="flex gap-2">
-              <span class="chip text-xs px-2 py-1 rounded-full">Legendary GPU</span>
-              <span class="chip text-xs px-2 py-1 rounded-full">Rare GPU</span>
+              <span class="chip text-xs px-2 py-1 rounded">LEGENDARY_GPU</span>
+              <span class="chip text-xs px-2 py-1 rounded">RARE_GPU</span>
             </div>
             <div>
-              <div class="h-2 rounded-full bg-white/10 mb-2 overflow-hidden"><div class="h-full w-3/4 rounded-full" style="background:linear-gradient(90deg,var(--primary),var(--cyan))"></div></div>
-              <p class="text-xs text-[var(--muted)]">Hashrate 74.2 TH/s</p>
+              <div class="h-2 rounded-full bg-white/10 mb-2 overflow-hidden"><div class="h-full w-3/4 rounded-full" style="background:linear-gradient(90deg,var(--pink),var(--cyan))"></div></div>
+              <p class="font-mono text-xs text-[var(--muted)]">hashrate: 74.2 TH/s</p>
             </div>
           </div>
         </div>
         <div>
-          <span class="chip text-xs px-3 py-1 rounded-full inline-block mb-4">Personal Project</span>
-          <h3 class="font-display text-2xl font-bold mb-3">Crypto Mining Simulator — Telegram Mini App</h3>
+          <span class="chip px-3 py-1 rounded inline-block mb-4">personal_project</span>
+          <h3 class="font-display text-xl font-bold mb-3">Crypto Mining Simulator — Telegram Mini App</h3>
           <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Challenge:</span> design and build an idle-clicker style mining game for Telegram
-            that feels premium (neon/cyberpunk, octane-render style assets) while staying light enough for WebViews.
-          </p>
-          <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Approach:</span> designed a tiered GPU progression system (Basic → Legendary),
-            researched and evaluated 3D web rendering libraries, and built UI/asset concepts with a consistent
-            neon pink &amp; cyan visual language.
+            <span class="text-white">Challenge:</span> an idle-mining game that feels premium — neon assets,
+            octane-render style — while staying light enough for Telegram WebViews.
           </p>
           <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> a cohesive visual + gameplay concept ready for integration
-            with the Telegram Mini Apps SDK, with reusable tiered-asset art direction.
+            <span class="text-white">Result:</span> tiered GPU progression system (Basic → Legendary), full
+            neon pink &amp; cyan art direction, rendering stack evaluated for 60fps performance budgets.
           </p>
           <div class="flex flex-wrap gap-2">
-            <span class="chip text-xs px-3 py-1 rounded-full">Telegram SDK</span>
-            <span class="chip text-xs px-3 py-1 rounded-full">Three.js</span>
-            <span class="chip text-xs px-3 py-1 rounded-full">Game Design</span>
-            <span class="chip text-xs px-3 py-1 rounded-full">UI/Art Direction</span>
+            <span class="chip px-3 py-1 rounded">telegram-sdk</span>
+            <span class="chip px-3 py-1 rounded">three.js</span>
+            <span class="chip px-3 py-1 rounded">game-design</span>
           </div>
         </div>
       </div>
 
       <!-- Case Study 2 -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div class="md:order-2 mockup h-64 sm:h-80 bg-[var(--bg-2)]">
+        <div class="md:order-2 mockup h-64 sm:h-80">
           <div class="relative z-10 h-full grid grid-cols-3 gap-3 p-6">
-            <div class="col-span-2 rounded-xl border border-white/10 bg-white/5 p-3">
-              <p class="text-xs text-[var(--muted)] mb-2">Today's Quests</p>
+            <div class="col-span-2 rounded-lg border border-white/10 bg-white/5 p-3">
+              <p class="font-mono text-xs text-[var(--muted)] mb-2">today_quests</p>
               <div class="h-2 rounded-full bg-white/10 mb-1 w-full"><div class="h-full w-2/3 rounded-full" style="background:var(--cyan)"></div></div>
-              <div class="h-2 rounded-full bg-white/10 w-full"><div class="h-full w-1/3 rounded-full" style="background:var(--primary)"></div></div>
+              <div class="h-2 rounded-full bg-white/10 w-full"><div class="h-full w-1/3 rounded-full" style="background:var(--pink)"></div></div>
             </div>
-            <div class="rounded-xl border border-white/10 bg-white/5 p-3 flex flex-col items-center justify-center">
-              <p class="font-display text-lg font-bold glow-text-cyan">Lv 12</p>
-              <p class="text-[10px] text-[var(--muted)]">Rank</p>
+            <div class="rounded-lg border border-white/10 bg-white/5 p-3 flex flex-col items-center justify-center">
+              <p class="font-display text-lg font-bold accent-cyan">Lv12</p>
+              <p class="font-mono text-[10px] text-[var(--muted)]">rank</p>
             </div>
           </div>
         </div>
         <div class="md:order-1">
-          <span class="chip text-xs px-3 py-1 rounded-full inline-block mb-4">Personal Project</span>
-          <h3 class="font-display text-2xl font-bold mb-3">Cyberpunk Productivity Dashboard</h3>
+          <span class="chip px-3 py-1 rounded inline-block mb-4">personal_project</span>
+          <h3 class="font-display text-xl font-bold mb-3">Cyberpunk Productivity Dashboard</h3>
           <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Challenge:</span> everyday task managers feel flat and don't motivate
-            follow-through. I wanted a dashboard that treats productivity like a game.
-          </p>
-          <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Approach:</span> designed a gamified system combining task management,
-            a reward/XP system, and visual progress tracking, wrapped in a cyberpunk/gaming visual style.
+            <span class="text-white">Challenge:</span> task managers feel flat and don't motivate follow-through —
+            so treat productivity like a game.
           </p>
           <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> a full product spec and UI concept covering quests, streaks,
-            and level-based rewards — plus a working live dashboard demo (NeonHUD) built on the same design system.
+            <span class="text-white">Result:</span> full product spec — quests, XP, streaks, level-based rewards —
+            plus a working live dashboard demo (NeonHUD) built on the same design system.
           </p>
           <div class="flex flex-wrap gap-2 mb-5">
-            <span class="chip text-xs px-3 py-1 rounded-full">Product Design</span>
-            <span class="chip text-xs px-3 py-1 rounded-full">Gamification</span>
-            <span class="chip text-xs px-3 py-1 rounded-full">Dashboard UX</span>
+            <span class="chip px-3 py-1 rounded">product-design</span>
+            <span class="chip px-3 py-1 rounded">gamification</span>
+            <span class="chip px-3 py-1 rounded">dashboard-ux</span>
           </div>
-          <a href="demos/neonhud.html" class="btn-primary text-white text-sm font-medium px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer inline-block">View live demo →</a>
+          <a href="demos/neonhud.html" class="btn-primary text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-200 cursor-pointer inline-block">View live demo →</a>
         </div>
       </div>
 
       <!-- Case Study 3 -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div class="mockup h-64 sm:h-80 bg-[var(--bg-2)]">
-          <div class="relative z-10 h-full p-6 font-mono text-xs text-[var(--cyan)] leading-relaxed overflow-hidden">
-            <p>&gt; rick_assistant --status</p>
+        <div class="mockup h-64 sm:h-80">
+          <div class="relative z-10 h-full p-6 font-mono text-xs leading-relaxed overflow-hidden" style="color:var(--cyan)">
+            <p><span class="t-prompt">$</span> rick_assistant --status</p>
             <p class="text-[var(--muted)]">scanning tasks...</p>
             <p class="text-[var(--muted)]">3 automations queued</p>
-            <p>&gt; running cleanup.py ✓</p>
-            <p>&gt; running report_gen.py ✓</p>
+            <p><span class="t-prompt">$</span> running cleanup.py <span class="t-ok">✓</span></p>
+            <p><span class="t-prompt">$</span> running report_gen.py <span class="t-ok">✓</span></p>
             <p class="text-white">done in 1.2s</p>
           </div>
         </div>
         <div>
-          <span class="chip text-xs px-3 py-1 rounded-full inline-block mb-4">Personal Project</span>
-          <h3 class="font-display text-2xl font-bold mb-3">Rick Assistant — Python Automation Script</h3>
+          <span class="chip px-3 py-1 rounded inline-block mb-4">personal_project</span>
+          <h3 class="font-display text-xl font-bold mb-3">Rick Assistant — Python Automation</h3>
           <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Challenge:</span> reduce time lost to repetitive manual tasks in a
-            daily dev workflow.
-          </p>
-          <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Approach:</span> built a modular Python assistant that runs
-            configurable automations on demand, with a simple CLI-style interface.
+            <span class="text-white">Challenge:</span> reduce hours lost to repetitive manual tasks in a daily dev workflow.
           </p>
           <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> a reusable automation base that can be extended with
-            new scripts/commands per client without touching the core.
+            <span class="text-white">Result:</span> a modular CLI assistant — each automation is a plug-in module,
+            so client-specific commands drop in without touching the core.
           </p>
           <div class="flex flex-wrap gap-2">
-            <span class="chip text-xs px-3 py-1 rounded-full">Python</span>
-            <span class="chip text-xs px-3 py-1 rounded-full">Automation</span>
-            <span class="chip text-xs px-3 py-1 rounded-full">CLI Tools</span>
+            <span class="chip px-3 py-1 rounded">python</span>
+            <span class="chip px-3 py-1 rounded">automation</span>
+            <span class="chip px-3 py-1 rounded">cli-tools</span>
           </div>
         </div>
       </div>
@@ -332,20 +345,20 @@
 <!-- SKILLS -->
 <section id="skills" class="py-24 px-6 border-t border-white/5">
   <div class="max-w-5xl mx-auto">
-    <p class="font-display text-[var(--cyan)] text-sm tracking-[0.3em] mb-3">SKILLS &amp; STACK</p>
-    <h2 class="font-display text-3xl font-bold mb-12">Tools I work with</h2>
+    <p class="section-tag mb-3">// 04 — skills</p>
+    <h2 class="font-display text-2xl font-bold mb-12">Tools I work with</h2>
     <div class="flex flex-wrap gap-3">
-      <span class="chip px-4 py-2 rounded-full text-sm">Python</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">JavaScript</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">HTML / CSS</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">Three.js</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">PixiJS</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">Telegram Mini Apps SDK</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">Anime.js / GSAP</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">Tailwind CSS</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">Automation Scripting</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">UI/UX &amp; Motion Design</span>
-      <span class="chip px-4 py-2 rounded-full text-sm">Git</span>
+      <span class="chip px-4 py-2 rounded text-sm">python</span>
+      <span class="chip px-4 py-2 rounded text-sm">javascript</span>
+      <span class="chip px-4 py-2 rounded text-sm">html/css</span>
+      <span class="chip px-4 py-2 rounded text-sm">three.js</span>
+      <span class="chip px-4 py-2 rounded text-sm">pixijs</span>
+      <span class="chip px-4 py-2 rounded text-sm">telegram-sdk</span>
+      <span class="chip px-4 py-2 rounded text-sm">chart.js</span>
+      <span class="chip px-4 py-2 rounded text-sm">anime.js / gsap</span>
+      <span class="chip px-4 py-2 rounded text-sm">tailwind</span>
+      <span class="chip px-4 py-2 rounded text-sm">notion-systems</span>
+      <span class="chip px-4 py-2 rounded text-sm">git</span>
     </div>
   </div>
 </section>
@@ -353,60 +366,95 @@
 <!-- CONTACT -->
 <section id="contact" class="py-28 px-6 border-t border-white/5 bg-grid">
   <div class="max-w-3xl mx-auto text-center">
-    <p class="font-display text-[var(--cyan)] text-sm tracking-[0.3em] mb-3">GET IN TOUCH</p>
-    <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">Let's build something together</h2>
+    <p class="section-tag mb-3">// 05 — contact</p>
+    <h2 class="font-display text-2xl sm:text-3xl font-bold mb-6">Let's build something</h2>
     <p class="text-[var(--muted)] mb-10 max-w-xl mx-auto leading-relaxed">
-      Open to freelance projects — Telegram Mini Apps, Python automation, or dashboard builds.
-      Reach out and let's talk about what you need.
+      Open for freelance — Telegram Mini Apps, Python automation, dashboards.
+      Free scoping, fixed quotes, response within 24h.
     </p>
     <div class="flex flex-wrap justify-center gap-4">
-      <a href="mailto:vadimash204@gmail.com" class="btn-primary text-white font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer">vadimash204@gmail.com</a>
-      <a href="https://github.com/niktofy" class="btn-outline text-white font-medium px-6 py-3 rounded-full transition-all duration-200 cursor-pointer">GitHub</a>
+      <a href="mailto:vadimash204@gmail.com" class="btn-primary font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">vadimash204@gmail.com</a>
+      <a href="https://github.com/niktofy" class="btn-outline font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">GitHub</a>
     </div>
   </div>
 </section>
 
-<footer class="py-8 px-6 text-center text-[var(--muted)] text-sm border-t border-white/5">
-  © <span id="year"></span> Vadim Melnic. Built with care, one neon pixel at a time.
+<footer class="py-8 px-6 text-center font-mono text-xs text-[var(--muted)] border-t border-white/5">
+  © <span id="year"></span> vadim.melnic — built with care, one neon pixel at a time_
 </footer>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
-
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (!reduceMotion && window.anime) {
-    anime({
-      targets: '#top .reveal',
-      opacity: [0, 1],
-      translateY: [24, 0],
-      delay: anime.stagger(90),
-      duration: 700,
-      easing: 'easeOutQuad'
-    });
+  // --- terminal typing loop ---
+  const term = document.getElementById('term');
+  const script = [
+    {cmd: 'whoami', out: ['vadim.melnic — full-stack developer']},
+    {cmd: 'vadim build --type telegram-mini-app', out: ['<span class="t-ok">✓</span> shipped: crypto mining simulator']},
+    {cmd: 'vadim build --type dashboard --live', out: ['<span class="t-ok">✓</span> shipped: neonhud — real-time ops']},
+    {cmd: 'vadim automate --lang python', out: ['<span class="t-ok">✓</span> shipped: rick assistant, invoiceforge']},
+    {cmd: 'vadim hire --response-time', out: ['&lt; 24 hours. <span class="t-ok">available now.</span>']},
+  ];
 
+  function renderStatic(){
+    term.innerHTML = script.map(s =>
+      `<div><span class="t-prompt">$</span> ${s.cmd}</div>` +
+      s.out.map(o => `<div class="t-out">${o}</div>`).join('')
+    ).join('');
+  }
+
+  if (reduceMotion) { renderStatic(); }
+  else {
+    let li = 0;
+    const lines = [];
+    function draw(current){
+      term.innerHTML = lines.join('') +
+        (current !== undefined ? `<div><span class="t-prompt">$</span> ${current}<span class="caret"></span></div>` : `<div><span class="t-prompt">$</span> <span class="caret"></span></div>`);
+    }
+    function typeLine(){
+      const s = script[li % script.length];
+      if (li >= script.length && li % script.length === 0) lines.length = 0;
+      let ci = 0;
+      const t = setInterval(() => {
+        ci++;
+        draw(s.cmd.slice(0, ci));
+        if (ci >= s.cmd.length){
+          clearInterval(t);
+          setTimeout(() => {
+            lines.push(`<div><span class="t-prompt">$</span> ${s.cmd}</div>` + s.out.map(o=>`<div class="t-out">${o}</div>`).join(''));
+            if (lines.length > 4) lines.shift();
+            draw();
+            li++;
+            setTimeout(typeLine, 900);
+          }, 350);
+        }
+      }, 42);
+    }
+    draw(); setTimeout(typeLine, 600);
+  }
+
+  // --- scroll reveal ---
+  if (!reduceMotion) {
+    document.querySelectorAll('.reveal').forEach((el,i) => {
+      el.style.transition = 'opacity .7s ease, transform .7s ease';
+      setTimeout(() => { el.style.opacity = 1; el.style.transform = 'none'; }, 150 + i*110);
+    });
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          anime({
-            targets: entry.target,
-            opacity: [0, 1],
-            translateY: [24, 0],
-            duration: 700,
-            easing: 'easeOutQuad'
-          });
-          observer.unobserve(entry.target);
+      entries.forEach(e => {
+        if (e.isIntersecting){
+          e.target.style.transition = 'opacity .7s ease, transform .7s ease';
+          e.target.style.opacity = 1; e.target.style.transform = 'none';
+          observer.unobserve(e.target);
         }
       });
-    }, { threshold: 0.15 });
-
+    }, {threshold:.12});
     document.querySelectorAll('section:not(#top) .card, section:not(#top) h2, section:not(#top) .grid > div').forEach(el => {
-      el.style.opacity = 0;
-      el.style.transform = 'translateY(24px)';
+      el.style.opacity = 0; el.style.transform = 'translateY(24px)';
       observer.observe(el);
     });
   } else {
-    document.querySelectorAll('.reveal').forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });
+    document.querySelectorAll('.reveal').forEach(el => { el.style.opacity=1; el.style.transform='none'; });
   }
 </script>
 
