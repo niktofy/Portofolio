@@ -95,6 +95,14 @@
     border:1px solid rgba(0,229,255,.2);
     background:#0A0A18;
   }
+  .shot{
+    border-radius:12px;
+    border:1px solid rgba(0,229,255,.25);
+    box-shadow:0 0 32px -10px rgba(0,229,255,.3);
+    width:100%; height:auto; display:block;
+    transition:box-shadow .25s, border-color .25s;
+  }
+  .shot:hover{border-color:var(--pink); box-shadow:0 0 40px -8px rgba(255,46,136,.45);}
   .mockup::before{
     content:""; position:absolute; inset:0;
     background:radial-gradient(circle at 25% 15%, rgba(255,46,136,.28), transparent 55%),
@@ -273,38 +281,80 @@
         </div>
       </div>
 
-      <!-- Case Study 2 -->
+      <!-- Case Study 2: Focus Quest -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div class="md:order-2 mockup h-64 sm:h-80">
-          <div class="relative z-10 h-full grid grid-cols-3 gap-3 p-6">
-            <div class="col-span-2 rounded-lg border border-white/10 bg-white/5 p-3">
-              <p class="font-mono text-xs text-[var(--muted)] mb-2">today_quests</p>
-              <div class="h-2 rounded-full bg-white/10 mb-1 w-full"><div class="h-full w-2/3 rounded-full" style="background:var(--cyan)"></div></div>
-              <div class="h-2 rounded-full bg-white/10 w-full"><div class="h-full w-1/3 rounded-full" style="background:var(--pink)"></div></div>
-            </div>
-            <div class="rounded-lg border border-white/10 bg-white/5 p-3 flex flex-col items-center justify-center">
-              <p class="font-display text-lg font-bold accent-cyan">Lv12</p>
-              <p class="font-mono text-[10px] text-[var(--muted)]">rank</p>
-            </div>
-          </div>
+        <div class="md:order-2">
+          <img src="assets/focusquest.png" alt="Focus Quest — gamified productivity desktop app: XP and HP bars, weekly boss with health bar, quest list" class="shot" loading="lazy">
         </div>
         <div class="md:order-1">
-          <span class="chip px-3 py-1 rounded inline-block mb-4">personal_project</span>
-          <h3 class="font-display text-xl font-bold mb-3">Cyberpunk Productivity Dashboard</h3>
+          <span class="chip px-3 py-1 rounded inline-block mb-4">desktop_app — shipped</span>
+          <h3 class="font-display text-xl font-bold mb-3">Focus Quest — Gamified Productivity App</h3>
           <p class="text-[var(--muted)] leading-relaxed mb-4">
             <span class="text-white">Challenge:</span> task managers feel flat and don't motivate follow-through —
-            so treat productivity like a game.
+            so I turned productivity into an RPG.
           </p>
           <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> full product spec — quests, XP, streaks, level-based rewards —
-            plus a working live dashboard demo (NeonHUD) built on the same design system.
+            <span class="text-white">Result:</span> a full native desktop app — XP &amp; HP system, weekly boss
+            fights, skill tree, streaks, focus timer, voice commands and system-tray integration.
+            Django backend + PyWebView native shell.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="chip px-3 py-1 rounded">python</span>
+            <span class="chip px-3 py-1 rounded">django</span>
+            <span class="chip px-3 py-1 rounded">pywebview</span>
+            <span class="chip px-3 py-1 rounded">speech-recognition</span>
+            <span class="chip px-3 py-1 rounded">gamification</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case Study 3: NeonHUD -->
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <a href="demos/neonhud.html" class="cursor-pointer"><img src="assets/neonhud.png" alt="NeonHUD — real-time mining ops dashboard with animated hashrate chart, live stats and rig status table" class="shot" loading="lazy"></a>
+        </div>
+        <div>
+          <span class="chip px-3 py-1 rounded inline-block mb-4">live_demo</span>
+          <h3 class="font-display text-xl font-bold mb-3">NeonHUD — Real-Time Ops Dashboard</h3>
+          <p class="text-[var(--muted)] leading-relaxed mb-4">
+            <span class="text-white">Challenge:</span> prove a production-quality live dashboard can run from
+            a single HTML file — no server, no build pipeline.
+          </p>
+          <p class="text-[var(--muted)] leading-relaxed mb-5">
+            <span class="text-white">Result:</span> 4-panel HUD with live stat counters, streaming 24h chart
+            and rig temperature monitoring — updating every 2.5s, entirely in-browser.
           </p>
           <div class="flex flex-wrap gap-2 mb-5">
-            <span class="chip px-3 py-1 rounded">product-design</span>
-            <span class="chip px-3 py-1 rounded">gamification</span>
-            <span class="chip px-3 py-1 rounded">dashboard-ux</span>
+            <span class="chip px-3 py-1 rounded">javascript</span>
+            <span class="chip px-3 py-1 rounded">chart.js</span>
+            <span class="chip px-3 py-1 rounded">zero-backend</span>
           </div>
-          <a href="demos/neonhud.html" class="btn-primary text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-200 cursor-pointer inline-block">View live demo →</a>
+          <a href="demos/neonhud.html" class="btn-primary text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-200 cursor-pointer inline-block">Open live demo →</a>
+        </div>
+      </div>
+
+      <!-- Case Study 4: InvoiceForge -->
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div class="md:order-2">
+          <a href="https://github.com/niktofy/invoice-forge" class="cursor-pointer"><img src="assets/invoiceforge.png" alt="InvoiceForge — styled HTML invoice generated from one CLI command" class="shot" loading="lazy"></a>
+        </div>
+        <div class="md:order-1">
+          <span class="chip px-3 py-1 rounded inline-block mb-4">open_source</span>
+          <h3 class="font-display text-xl font-bold mb-3">InvoiceForge — Python Invoice CLI</h3>
+          <p class="text-[var(--muted)] leading-relaxed mb-4">
+            <span class="text-white">Challenge:</span> freelancers waste time hand-making invoices or pay
+            monthly for what is a template plus a counter.
+          </p>
+          <p class="text-[var(--muted)] leading-relaxed mb-5">
+            <span class="text-white">Result:</span> one command → one styled, print-ready invoice.
+            Auto-numbering, configurable branding, zero dependencies — stdlib only.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="chip px-3 py-1 rounded">python</span>
+            <span class="chip px-3 py-1 rounded">cli</span>
+            <span class="chip px-3 py-1 rounded">zero-deps</span>
+          </div>
+          <a href="https://github.com/niktofy/invoice-forge" class="btn-outline text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-200 cursor-pointer inline-block">View source on GitHub →</a>
         </div>
       </div>
 
