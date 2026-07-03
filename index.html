@@ -111,6 +111,26 @@
   }
   .gh-link:hover{color:var(--pink); border-color:rgba(255,46,136,.5);}
   .cap{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); text-align:center; margin-top:8px;}
+  .gallery-btn{
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(0,229,255,.35);
+    color:var(--cyan);
+    transition:border-color .2s, box-shadow .2s, color .2s;
+  }
+  .gallery-btn:hover{
+    border-color:var(--pink); color:var(--pink);
+    box-shadow:0 0 24px -6px rgba(255,46,136,.4);
+  }
+  .gallery-btn .arrow{display:inline-block; transition:transform .3s;}
+  .gallery-btn.open .arrow{transform:rotate(180deg);}
+  .gallery-btn .count{
+    background:rgba(0,229,255,.12); border-radius:99px; padding:1px 8px; font-size:11px; margin-left:4px;
+  }
+  .gallery-panel{
+    max-height:0; overflow:hidden;
+    opacity:0; transition:max-height .5s ease, opacity .4s ease;
+  }
+  .gallery-panel.open{max-height:2400px; opacity:1;}
   .mockup::before{
     content:""; position:absolute; inset:0;
     background:radial-gradient(circle at 25% 15%, rgba(255,46,136,.28), transparent 55%),
@@ -292,24 +312,35 @@
             <a href="https://github.com/niktofy" class="gh-link">↗ github.com/niktofy</a>
           </div>
         </div>
-        <div class="grid sm:grid-cols-2 gap-4 mb-4">
-          <div>
-            <img src="assets/dropfix-admin.webp" alt="DROPFIX admin console — user stats, DF balance, active miners, deposits and withdrawals, manager role management, crypto balance crediting" class="shot" loading="lazy">
-            <p class="cap">admin console — roles · balances · withdrawal review</p>
-          </div>
-          <div>
-            <img src="assets/dropfix-charts.webp" alt="DROPFIX admin analytics — deposit and withdrawal charts, new users, activity summary" class="shot" loading="lazy">
-            <p class="cap">analytics — deposits · withdrawals · user growth</p>
-          </div>
+
+        <div class="text-center mb-4">
+          <button id="dropfix-toggle" class="gallery-btn font-mono text-sm px-6 py-3 rounded-lg cursor-pointer" aria-expanded="false" aria-controls="dropfix-gallery">
+            <span class="arrow">▾</span> view product screenshots <span class="count">4</span>
+          </button>
         </div>
-        <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
-          <div>
-            <img src="assets/dropfix-deposit.webp" alt="DROPFIX deposit flow — BTC, LTC, USDT with TRC20 and BEP20 networks, QR code and unique deposit address" class="shot" loading="lazy">
-            <p class="cap">real deposits — trc20/bep20 + qr</p>
+
+        <div id="dropfix-gallery" class="gallery-panel">
+          <div class="gallery-inner">
+          <div class="grid sm:grid-cols-2 gap-4 mb-4 pt-4">
+            <div>
+              <img src="assets/dropfix-admin.webp" alt="DROPFIX admin console — user stats, DF balance, active miners, deposits and withdrawals, manager role management, crypto balance crediting" class="shot" loading="lazy">
+              <p class="cap">admin console — roles · balances · withdrawal review</p>
+            </div>
+            <div>
+              <img src="assets/dropfix-charts.webp" alt="DROPFIX admin analytics — deposit and withdrawal charts, new users, activity summary" class="shot" loading="lazy">
+              <p class="cap">analytics — deposits · withdrawals · user growth</p>
+            </div>
           </div>
-          <div>
-            <img src="assets/dropfix-wheel.webp" alt="DROPFIX wheel of fortune — spin rewards with DFX prizes, boosts and purchasable spin credits" class="shot" loading="lazy">
-            <p class="cap">wheel of fortune — monetized spins</p>
+          <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+            <div>
+              <img src="assets/dropfix-deposit.webp" alt="DROPFIX deposit flow — BTC, LTC, USDT with TRC20 and BEP20 networks, QR code and unique deposit address" class="shot" loading="lazy">
+              <p class="cap">real deposits — trc20/bep20 + qr</p>
+            </div>
+            <div>
+              <img src="assets/dropfix-wheel.webp" alt="DROPFIX wheel of fortune — spin rewards with DFX prizes, boosts and purchasable spin credits" class="shot" loading="lazy">
+              <p class="cap">wheel of fortune — monetized spins</p>
+            </div>
+          </div>
           </div>
         </div>
       </div>
@@ -474,6 +505,19 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // --- DROPFIX gallery toggle ---
+  const gToggle = document.getElementById('dropfix-toggle');
+  const gPanel = document.getElementById('dropfix-gallery');
+  gToggle.addEventListener('click', () => {
+    const open = gPanel.classList.toggle('open');
+    gToggle.classList.toggle('open', open);
+    gToggle.setAttribute('aria-expanded', open);
+    gPanel.style.maxHeight = open ? gPanel.scrollHeight + 'px' : '0px';
+    gPanel.style.opacity = open ? '1' : '0';
+    gToggle.querySelector('.arrow').nextSibling.textContent = open ? ' hide screenshots ' : ' view product screenshots ';
+    if (open) setTimeout(() => { gPanel.style.maxHeight = gPanel.scrollHeight + 'px'; }, 350);
+  });
 
   // --- terminal typing loop ---
   const term = document.getElementById('term');
