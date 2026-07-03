@@ -103,6 +103,14 @@
     transition:box-shadow .25s, border-color .25s;
   }
   .shot:hover{border-color:var(--pink); box-shadow:0 0 40px -8px rgba(255,46,136,.45);}
+  .gh-link{
+    font-family:'JetBrains Mono',monospace; font-size:13px;
+    color:var(--cyan); text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+    border-bottom:1px dashed rgba(0,229,255,.35); padding-bottom:2px;
+    transition:color .2s, border-color .2s;
+  }
+  .gh-link:hover{color:var(--pink); border-color:rgba(255,46,136,.5);}
+  .cap{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); text-align:center; margin-top:8px;}
   .mockup::before{
     content:""; position:absolute; inset:0;
     background:radial-gradient(circle at 25% 15%, rgba(255,46,136,.28), transparent 55%),
@@ -248,30 +256,61 @@
 
     <div class="space-y-16">
 
-      <!-- Case Study 1 -->
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div class="flex justify-center">
-          <a href="demos/miner.html" class="cursor-pointer" style="max-width:280px"><img src="assets/miner.png" alt="NeonMiner Telegram Mini App — multi-coin wallet with BTC, LTC and USDT balances, deposit and withdraw buttons, tiered GPU mining rigs" class="shot" loading="lazy"></a>
-        </div>
-        <div>
-          <span class="chip px-3 py-1 rounded inline-block mb-4">telegram_mini_app</span>
-          <h3 class="font-display text-xl font-bold mb-3">Crypto Mining Simulator — Telegram Mini App</h3>
-          <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Challenge:</span> an idle-mining game that feels premium — neon assets,
-            octane-render style — while staying light enough for Telegram WebViews.
-          </p>
-          <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> full game economy with a <span class="text-white">multi-coin
-            wallet — BTC, LTC &amp; USDT — with deposit and withdraw flows</span>, tiered GPU progression
-            (Rare → Epic → Legendary) with per-rig earning rates, and neon pink &amp; cyan art direction
-            engineered for 60fps.
-          </p>
-          <div class="flex flex-wrap gap-2 mb-5">
-            <span class="chip px-3 py-1 rounded">telegram-sdk</span>
-            <span class="chip px-3 py-1 rounded">btc/ltc/usdt</span>
-            <span class="chip px-3 py-1 rounded">game-design</span>
+      <!-- Case Study 1: DROPFIX -->
+      <div>
+        <div class="grid md:grid-cols-2 gap-10 items-center mb-8">
+          <div class="flex justify-center">
+            <div style="max-width:300px">
+              <img src="assets/dropfix-app.webp" alt="DROPFIX mining app — DFX token live price chart, mining hall with 8 animated GPU rigs, active mining timer, 828 users online" class="shot" loading="lazy">
+              <p class="cap">player app — dfx token · mining hall · live price</p>
+            </div>
           </div>
-          <a href="demos/miner.html" class="btn-primary text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-200 cursor-pointer inline-block">Open UI demo →</a>
+          <div>
+            <span class="chip px-3 py-1 rounded inline-block mb-4" style="border-color:rgba(255,46,136,.5); color:var(--pink)">featured — full product</span>
+            <h3 class="font-display text-xl font-bold mb-3">DROPFIX — Crypto Mining Platform</h3>
+            <p class="text-[var(--muted)] leading-relaxed mb-4">
+              <span class="text-white">Challenge:</span> build a complete play-to-earn mining platform as a
+              Telegram Mini App — not just the game, but the token economy, real crypto payment rails and
+              the operations tools behind it.
+            </p>
+            <p class="text-[var(--muted)] leading-relaxed mb-5">
+              <span class="text-white">Result:</span> a shipped two-sided product.
+              <span class="text-white">Player side:</span> DFX token with live price feed and 24h charts,
+              a mining hall of tiered animated GPU rigs, real <span class="text-white">BTC / LTC / USDT
+              deposits &amp; withdrawals</span> (TRC20 &amp; BEP20, per-user QR addresses), and a
+              wheel-of-fortune with purchasable spin credits.
+              <span class="text-white">Operator side:</span> a full admin console — role management,
+              withdrawal review queue, user broadcast, audit log, SQL runner and revenue analytics.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="chip px-3 py-1 rounded">telegram-mini-app</span>
+              <span class="chip px-3 py-1 rounded">crypto-payments</span>
+              <span class="chip px-3 py-1 rounded">tokenomics</span>
+              <span class="chip px-3 py-1 rounded">admin-console</span>
+              <span class="chip px-3 py-1 rounded">full-stack</span>
+            </div>
+            <a href="https://github.com/niktofy" class="gh-link">↗ github.com/niktofy</a>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <img src="assets/dropfix-admin.webp" alt="DROPFIX admin console — user stats, DF balance, active miners, deposits and withdrawals, manager role management, crypto balance crediting" class="shot" loading="lazy">
+            <p class="cap">admin console — roles · balances · withdrawal review</p>
+          </div>
+          <div>
+            <img src="assets/dropfix-charts.webp" alt="DROPFIX admin analytics — deposit and withdrawal charts, new users, activity summary" class="shot" loading="lazy">
+            <p class="cap">analytics — deposits · withdrawals · user growth</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+          <div>
+            <img src="assets/dropfix-deposit.webp" alt="DROPFIX deposit flow — BTC, LTC, USDT with TRC20 and BEP20 networks, QR code and unique deposit address" class="shot" loading="lazy">
+            <p class="cap">real deposits — trc20/bep20 + qr</p>
+          </div>
+          <div>
+            <img src="assets/dropfix-wheel.webp" alt="DROPFIX wheel of fortune — spin rewards with DFX prizes, boosts and purchasable spin credits" class="shot" loading="lazy">
+            <p class="cap">wheel of fortune — monetized spins</p>
+          </div>
         </div>
       </div>
 
@@ -292,20 +331,21 @@
             fights, skill tree, streaks, focus timer, voice commands and system-tray integration.
             Django backend + PyWebView native shell.
           </p>
-          <div class="flex flex-wrap gap-2">
+          <div class="flex flex-wrap gap-2 mb-5">
             <span class="chip px-3 py-1 rounded">python</span>
             <span class="chip px-3 py-1 rounded">django</span>
             <span class="chip px-3 py-1 rounded">pywebview</span>
             <span class="chip px-3 py-1 rounded">speech-recognition</span>
             <span class="chip px-3 py-1 rounded">gamification</span>
           </div>
+          <a href="https://github.com/niktofy" class="gh-link">↗ github.com/niktofy</a>
         </div>
       </div>
 
       <!-- Case Study 3: NeonHUD -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <a href="demos/neonhud.html" class="cursor-pointer"><img src="assets/neonhud.png" alt="NeonHUD — real-time mining ops dashboard with animated hashrate chart, live stats and rig status table" class="shot" loading="lazy"></a>
+          <img src="assets/neonhud.png" alt="NeonHUD — live crypto markets dashboard with real BTC price chart, market prices and 24h changes" class="shot" loading="lazy">
         </div>
         <div>
           <span class="chip px-3 py-1 rounded inline-block mb-4">live_demo — real data</span>
@@ -325,7 +365,7 @@
             <span class="chip px-3 py-1 rounded">real-time</span>
             <span class="chip px-3 py-1 rounded">zero-backend</span>
           </div>
-          <a href="demos/neonhud.html" class="btn-primary text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-200 cursor-pointer inline-block">Open live demo →</a>
+          <a href="https://github.com/niktofy/Portofolio/blob/main/demos/neonhud.html" class="gh-link">↗ source on github</a>
         </div>
       </div>
 
@@ -351,7 +391,7 @@
             <span class="chip px-3 py-1 rounded">cli</span>
             <span class="chip px-3 py-1 rounded">zero-deps</span>
           </div>
-          <a href="https://github.com/niktofy/invoice-forge" class="btn-outline text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-200 cursor-pointer inline-block">View source on GitHub →</a>
+          <a href="https://github.com/niktofy/invoice-forge" class="gh-link">↗ github.com/niktofy/invoice-forge</a>
         </div>
       </div>
 
@@ -377,11 +417,12 @@
             <span class="text-white">Result:</span> a modular CLI assistant — each automation is a plug-in module,
             so client-specific commands drop in without touching the core.
           </p>
-          <div class="flex flex-wrap gap-2">
+          <div class="flex flex-wrap gap-2 mb-5">
             <span class="chip px-3 py-1 rounded">python</span>
             <span class="chip px-3 py-1 rounded">automation</span>
             <span class="chip px-3 py-1 rounded">cli-tools</span>
           </div>
+          <a href="https://github.com/niktofy" class="gh-link">↗ github.com/niktofy</a>
         </div>
       </div>
 
