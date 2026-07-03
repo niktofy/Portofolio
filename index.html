@@ -200,7 +200,7 @@
 <!-- STATS -->
 <section class="py-10 px-6 border-t border-white/5">
   <div class="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-    <div><p class="stat-num text-3xl accent-cyan">7</p><p class="font-mono text-xs text-[var(--muted)] mt-2">projects_shipped</p></div>
+    <div><p class="stat-num text-3xl accent-cyan">8</p><p class="font-mono text-xs text-[var(--muted)] mt-2">projects_shipped</p></div>
     <div><p class="stat-num text-3xl accent-cyan">5</p><p class="font-mono text-xs text-[var(--muted)] mt-2">specialty_areas</p></div>
     <div><p class="stat-num text-3xl accent-cyan">&lt;24h</p><p class="font-mono text-xs text-[var(--muted)] mt-2">response_time</p></div>
     <div><p class="stat-num text-3xl accent-cyan">3</p><p class="font-mono text-xs text-[var(--muted)] mt-2">languages</p></div>
@@ -247,8 +247,8 @@
 
       <div class="card rounded-xl p-6">
         <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 17l6-5-6-5"/><path d="M12 19h8"/></svg>
-        <h3 class="font-display text-base font-bold mb-2">Python Automation &amp; CLI</h3>
-        <p class="text-[var(--muted)] text-sm leading-relaxed">Scripts and assistants that kill repetitive work — zero-dependency, documented, extensible per client.</p>
+        <h3 class="font-display text-base font-bold mb-2">Python Automation &amp; AI</h3>
+        <p class="text-[var(--muted)] text-sm leading-relaxed">Automation scripts, CLI assistants and AI chatbot integrations (Claude API, retrieval-grounded) — documented, extensible per client.</p>
       </div>
 
       <div class="card rounded-xl p-6">
@@ -376,23 +376,27 @@
       <!-- Case Study 3: NeonHUD -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <img src="assets/neonhud.png" alt="NeonHUD — live crypto markets dashboard with real BTC price chart, market prices and 24h changes" class="shot" loading="lazy">
+          <img src="assets/neonhud-v3.png" alt="NeonHUD — interactive crypto dashboard: coin selector cards, 24H/7D/30D timeframes, search, watchlist stars and 7-day sparklines for ten coins, USD converter" class="shot" loading="lazy">
+          <p class="cap">10 coins · timeframes · watchlist · sparklines · converter</p>
         </div>
         <div>
-          <span class="chip px-3 py-1 rounded inline-block mb-4">live_demo — real data</span>
-          <h3 class="font-display text-xl font-bold mb-3">NeonHUD — Live Crypto Markets Dashboard</h3>
+          <span class="chip px-3 py-1 rounded inline-block mb-4">live_app — real data</span>
+          <h3 class="font-display text-xl font-bold mb-3">NeonHUD — Interactive Crypto Markets App</h3>
           <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Challenge:</span> build a dashboard on <span class="text-white">real
-            market data</span> — live prices, not mockups — that still runs from a single HTML file.
+            <span class="text-white">Challenge:</span> a full trading-desk experience on
+            <span class="text-white">real market data</span> — interactive, stateful, fast — from a single
+            HTML file with no backend.
           </p>
           <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> live BTC/ETH/SOL/LTC/TON/DOGE prices and 24h changes from
-            the CoinGecko API, a streaming Bitcoin chart, auto-refresh every 60s — with a graceful simulated
-            fallback if the API is unreachable.
+            <span class="text-white">Result:</span> 10 live coins from the CoinGecko API with
+            <span class="text-white">click-to-chart selection, 24H/7D/30D timeframes, search, sortable
+            columns, 7-day sparklines per coin, a persistent ★ watchlist (localStorage) and a live USD ⇄
+            coin converter</span> — plus graceful simulated fallback when the API is unreachable.
           </p>
           <div class="flex flex-wrap gap-2 mb-5">
             <span class="chip px-3 py-1 rounded">rest-api</span>
             <span class="chip px-3 py-1 rounded">chart.js</span>
+            <span class="chip px-3 py-1 rounded">state-management</span>
             <span class="chip px-3 py-1 rounded">real-time</span>
             <span class="chip px-3 py-1 rounded">zero-backend</span>
           </div>
@@ -400,29 +404,63 @@
         </div>
       </div>
 
-      <!-- Case Study 4: InvoiceForge -->
+      <!-- Case Study 4: SupportDesk AI -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div class="md:order-2">
-          <a href="https://github.com/niktofy/invoice-forge" class="cursor-pointer"><img src="assets/invoiceforge.png" alt="InvoiceForge — styled HTML invoice generated from one CLI command" class="shot" loading="lazy"></a>
+          <img src="assets/supportdesk.png" alt="SupportDesk AI chat widget on a demo furniture store — real conversation with answers citing their knowledge-base sources" class="shot" loading="lazy">
+          <p class="cap">live conversation — every answer cites its source doc</p>
         </div>
         <div class="md:order-1">
-          <span class="chip px-3 py-1 rounded inline-block mb-4">open_source</span>
-          <h3 class="font-display text-xl font-bold mb-3">InvoiceForge — Automatic Invoice Generator</h3>
+          <span class="chip px-3 py-1 rounded inline-block mb-4" style="border-color:rgba(0,229,255,.5); color:var(--cyan)">ai — open source</span>
+          <h3 class="font-display text-xl font-bold mb-3">SupportDesk AI — Support Chatbot Widget</h3>
           <p class="text-[var(--muted)] leading-relaxed mb-4">
-            <span class="text-white">Challenge:</span> every freelancer needs to send clients an invoice to
-            get paid — but making them by hand in Word looks unprofessional, and invoice apps cost $10+/month.
+            <span class="text-white">Challenge:</span> businesses want an AI support chat on their site, but
+            pure-LLM bots hallucinate prices and policies — a real liability.
           </p>
           <p class="text-[var(--muted)] leading-relaxed mb-5">
-            <span class="text-white">Result:</span> a Python tool that builds the invoice for you — type one
-            command with the client name and the work done, get back a numbered, branded, print-ready
-            invoice like the one pictured. I use it for my own clients.
+            <span class="text-white">Result:</span> an embeddable chat widget with a
+            <span class="text-white">retrieval-grounded brain</span>: it indexes the client's own docs and
+            every answer cites its source. Optional Claude AI mode composes replies strictly from retrieved
+            context, with automatic fallback. Two-line embed on any site, brandable, zero dependencies.
           </p>
           <div class="flex flex-wrap gap-2 mb-5">
             <span class="chip px-3 py-1 rounded">python</span>
-            <span class="chip px-3 py-1 rounded">cli</span>
-            <span class="chip px-3 py-1 rounded">zero-deps</span>
+            <span class="chip px-3 py-1 rounded">claude-api</span>
+            <span class="chip px-3 py-1 rounded">rag / retrieval</span>
+            <span class="chip px-3 py-1 rounded">embeddable-widget</span>
           </div>
-          <a href="https://github.com/niktofy/invoice-forge" class="gh-link">↗ github.com/niktofy/invoice-forge</a>
+          <a href="https://github.com/niktofy/supportdesk-ai" class="gh-link">↗ github.com/niktofy/supportdesk-ai</a>
+        </div>
+      </div>
+
+      <!-- Case Study 5: This Website -->
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <img src="assets/website.png" alt="This portfolio website — neon terminal hero with animated typing, custom design system" class="shot" loading="lazy">
+          <p class="cap">you're looking at it — designed & built from scratch</p>
+        </div>
+        <div>
+          <span class="chip px-3 py-1 rounded inline-block mb-4">web_design — live</span>
+          <h3 class="font-display text-xl font-bold mb-3">This Website — Custom Portfolio Site</h3>
+          <p class="text-[var(--muted)] leading-relaxed mb-4">
+            <span class="text-white">Challenge:</span> stand out among template portfolios with a fully
+            custom identity — designed, built and shipped without any site builder.
+          </p>
+          <p class="text-[var(--muted)] leading-relaxed mb-5">
+            <span class="text-white">Result:</span> a complete design system (Unbounded / Space Grotesk /
+            JetBrains Mono, neon pink &amp; cyan), an animated terminal hero, scroll-reveal motion that
+            respects <span class="font-mono text-sm">prefers-reduced-motion</span>, responsive from 375px up,
+            optimized WebP images — one HTML file, no build step, deployed via GitHub Actions.
+            I build landing pages and sites like this for clients.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="chip px-3 py-1 rounded">web-design</span>
+            <span class="chip px-3 py-1 rounded">tailwind</span>
+            <span class="chip px-3 py-1 rounded">animations</span>
+            <span class="chip px-3 py-1 rounded">accessibility</span>
+            <span class="chip px-3 py-1 rounded">ci/cd</span>
+          </div>
+          <a href="https://github.com/niktofy/Portofolio" class="gh-link">↗ github.com/niktofy/Portofolio</a>
         </div>
       </div>
 
@@ -525,7 +563,7 @@
     {cmd: 'whoami', out: ['vadim.melnic — full-stack developer']},
     {cmd: 'vadim build --type telegram-mini-app', out: ['<span class="t-ok">✓</span> shipped: crypto mining simulator']},
     {cmd: 'vadim build --type dashboard --live', out: ['<span class="t-ok">✓</span> shipped: neonhud — real-time ops']},
-    {cmd: 'vadim automate --lang python', out: ['<span class="t-ok">✓</span> shipped: rick assistant, invoiceforge']},
+    {cmd: 'vadim automate --lang python --ai', out: ['<span class="t-ok">✓</span> shipped: supportdesk-ai, rick assistant']},
     {cmd: 'vadim hire --response-time', out: ['&lt; 24 hours. <span class="t-ok">available now.</span>']},
   ];
 
