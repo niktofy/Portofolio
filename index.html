@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vadim Melnic | Full-Stack Developer</title>
-<meta name="description" content="Vadim Melnic, full-stack developer specializing in Telegram Mini Apps, Python automation and interactive dashboards.">
+<title>Vadim Melnic | Full-Stack Developer · Landing Pages, AI Chatbots &amp; Telegram Mini Apps</title>
+<meta name="description" content="Vadim Melnic, full-stack developer building landing pages, AI chatbots, Telegram Mini Apps and Python automation. Case studies, live demos and prices in the open.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -69,6 +69,20 @@
     color:var(--muted);
     background:rgba(255,255,255,.02);
   }
+  /* Keyboard focus: one visible ring everywhere, mouse clicks stay clean. */
+  :focus-visible{
+    outline:2px solid var(--cyan);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+  .skip-link{
+    position:absolute; left:50%; top:8px; transform:translate(-50%,-200%);
+    z-index:100; padding:10px 18px; border-radius:8px;
+    background:var(--pink); color:#fff;
+    font-family:'JetBrains Mono',monospace; font-size:13px;
+    transition:transform .18s ease;
+  }
+  .skip-link:focus{transform:translate(-50%,0);}
   /* Terminal */
   .terminal{
     background:#0A0A18;
@@ -84,7 +98,12 @@
     border-bottom:1px solid rgba(255,255,255,.06);
   }
   .terminal-bar i{width:11px;height:11px;border-radius:50%;display:block;}
-  .t-body{padding:16px 18px; min-height:180px; line-height:1.8;}
+  /* Long commands must scroll inside the terminal, never widen the page. */
+  .t-body{padding:16px 18px; min-height:180px; line-height:1.8; overflow-x:auto;}
+  .t-body > div{white-space:nowrap;}
+  @media (max-width:430px){
+    .terminal{font-size:11.5px;}
+  }
   .t-prompt{color:var(--pink);}
   .t-out{color:var(--muted);}
   .t-ok{color:#3DFF9E;}
@@ -103,6 +122,52 @@
     transition:box-shadow .25s, border-color .25s;
   }
   .shot:hover{border-color:var(--pink); box-shadow:0 0 40px -8px rgba(255,46,136,.45);}
+  /* Screenshots are wrapped in a real button at runtime, so zooming works
+     with a click and with the keyboard alike. */
+  .shot-btn{
+    display:block; width:100%; padding:0; border:0; background:none;
+    cursor:zoom-in; position:relative;
+  }
+  .shot-btn::after{
+    content:"⤢";
+    position:absolute; right:10px; bottom:10px;
+    width:28px; height:28px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:14px; color:var(--cyan);
+    background:rgba(6,6,15,.75); border:1px solid rgba(0,229,255,.3);
+    opacity:0; transition:opacity .2s;
+    pointer-events:none;
+  }
+  .shot-btn:hover::after, .shot-btn:focus-visible::after{opacity:1;}
+  /* Lightbox */
+  .lightbox{
+    position:fixed; inset:0; z-index:80;
+    display:none; align-items:center; justify-content:center;
+    padding:24px;
+    background:rgba(3,3,9,.92);
+    backdrop-filter:blur(6px);
+  }
+  .lightbox[open]{display:flex;}
+  .lightbox img{
+    max-width:min(1100px, 100%); max-height:82vh;
+    width:auto; height:auto; object-fit:contain;
+    border-radius:12px;
+    border:1px solid rgba(0,229,255,.3);
+    box-shadow:0 0 60px -12px rgba(0,229,255,.4);
+  }
+  .lightbox figcaption{
+    font-family:'JetBrains Mono',monospace; font-size:12px;
+    color:var(--muted); text-align:center; margin-top:14px;
+  }
+  .lightbox-close{
+    position:absolute; top:18px; right:18px;
+    width:42px; height:42px; border-radius:10px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(0,229,255,.35);
+    color:var(--cyan); font-size:20px; line-height:1;
+    cursor:pointer; transition:border-color .2s, color .2s;
+  }
+  .lightbox-close:hover{border-color:var(--pink); color:var(--pink);}
   .gh-link{
     font-family:'JetBrains Mono',monospace; font-size:13px;
     color:var(--cyan); text-decoration:none; display:inline-flex; align-items:center; gap:6px;
@@ -143,46 +208,109 @@
     backdrop-filter:blur(12px);
     border:1px solid rgba(255,255,255,.07);
   }
+  /* Language switch */
+  .lang-switch{
+    display:flex; align-items:center;
+    border:1px solid rgba(146,152,172,.28); border-radius:8px; overflow:hidden;
+  }
+  .lang-switch button{
+    font-family:'JetBrains Mono',monospace; font-size:11px;
+    /* Kept at/above the 24px minimum touch target. */
+    padding:7px 10px; color:var(--muted); background:none; border:0; cursor:pointer;
+    transition:color .2s, background .2s;
+  }
+  .lang-switch button:hover{color:var(--text);}
+  .lang-switch button[aria-pressed="true"]{
+    color:var(--bg); background:var(--cyan); font-weight:700;
+  }
+  /* Mobile menu */
+  .menu-toggle{
+    width:34px; height:34px; border-radius:8px;
+    border:1px solid rgba(146,152,172,.28);
+    background:none; color:var(--muted);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:color .2s, border-color .2s;
+  }
+  .menu-toggle:hover{color:var(--text); border-color:var(--cyan);}
+  .mobile-menu{
+    display:none;
+    position:absolute; top:calc(100% + 8px); left:0; right:0;
+    border-radius:12px; padding:8px;
+    flex-direction:column;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{
+    font-family:'JetBrains Mono',monospace; font-size:14px;
+    color:var(--muted); padding:11px 14px; border-radius:8px;
+    transition:color .2s, background .2s;
+  }
+  .mobile-menu a:hover{color:var(--text); background:rgba(255,255,255,.04);}
   .stat-num{font-family:'Unbounded'; font-weight:700;}
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .reveal{opacity:1; transform:none;}
     .caret{animation:none;}
     .glitch:hover{animation:none;}
+    .skip-link{transition:none;}
   }
 </style>
 </head>
 <body>
 
+<a href="#main" class="skip-link" data-i18n="a11y.skip">Skip to content</a>
+
 <!-- NAV -->
 <header class="fixed top-4 left-4 right-4 z-50 flex justify-center">
-  <nav class="nav-blur rounded-xl px-4 sm:px-6 py-3 flex items-center justify-between w-full max-w-5xl">
-    <a href="#top" class="font-mono font-bold text-lg"><span class="accent-pink">vadim</span><span class="text-white">@</span><span class="accent-cyan">dev</span><span class="text-white">:~$</span></a>
-    <div class="hidden md:flex items-center gap-8 font-mono text-[13px] text-[var(--muted)]">
+  <nav class="nav-blur rounded-xl px-4 sm:px-6 py-3 flex items-center justify-between w-full max-w-5xl relative" aria-label="Main">
+    <a href="#top" class="font-mono font-bold text-base sm:text-lg shrink-0"><span class="accent-pink">vadim</span><span class="text-white">@</span><span class="accent-cyan">dev</span><span class="text-white">:~$</span></a>
+
+    <div class="hidden md:flex items-center gap-7 font-mono text-[13px] text-[var(--muted)]">
       <a href="#about" class="hover:text-white transition-colors duration-200 cursor-pointer">./about</a>
       <a href="#work" class="hover:text-white transition-colors duration-200 cursor-pointer">./work</a>
       <a href="#services" class="hover:text-white transition-colors duration-200 cursor-pointer">./services</a>
       <a href="#skills" class="hover:text-white transition-colors duration-200 cursor-pointer">./skills</a>
+      <a href="#contact" class="hover:text-white transition-colors duration-200 cursor-pointer">./contact</a>
     </div>
-    <a href="#contact" class="btn-primary font-mono text-[13px] font-medium px-4 sm:px-5 py-2 rounded-lg transition-all duration-200 cursor-pointer">hire --now</a>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+      </div>
+      <a href="#contact" class="btn-primary font-mono text-[13px] font-medium px-3 sm:px-5 py-2 rounded-lg transition-all duration-200 cursor-pointer whitespace-nowrap">hire<span class="hidden sm:inline"> --now</span></a>
+      <button type="button" id="menu-toggle" class="menu-toggle md:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu" data-i18n-aria="a11y.menu">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu nav-blur md:hidden">
+      <a href="#about">./about</a>
+      <a href="#work">./work</a>
+      <a href="#services">./services</a>
+      <a href="#skills">./skills</a>
+      <a href="#contact">./contact</a>
+    </div>
   </nav>
 </header>
+
+<main id="main">
 
 <!-- HERO -->
 <section id="top" class="bg-grid min-h-screen flex items-center relative pt-32 pb-20 px-6">
   <div class="max-w-5xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center">
     <div>
-      <p class="reveal section-tag mb-4">// full-stack developer · available for freelance</p>
+      <p class="reveal section-tag mb-4" data-i18n="hero.tag">// full-stack developer · available for freelance</p>
       <h1 class="reveal font-display font-black text-4xl sm:text-6xl leading-tight mb-6">
         <span class="glitch">Vadim</span><br><span class="glitch accent-pink">Melnic</span>
       </h1>
-      <p class="reveal text-lg text-[var(--muted)] max-w-md mb-8 leading-relaxed">
-        I build <span class="text-white">Telegram Mini Apps</span>, <span class="text-white">Python automation</span>
-        and <span class="text-white">live dashboards</span>, from visual concept to shipped product.
+      <p class="reveal text-lg text-[var(--muted)] max-w-md mb-8 leading-relaxed" data-i18n="hero.lead">
+        I build <span class="text-white">landing pages</span>, <span class="text-white">AI chatbots</span>,
+        <span class="text-white">Telegram Mini Apps</span> and <span class="text-white">Python automation</span>,
+        from visual concept to shipped product.
       </p>
       <div class="reveal flex flex-wrap gap-4">
-        <a href="#work" class="btn-primary font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">View work</a>
-        <a href="#contact" class="btn-outline font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">Get in touch</a>
+        <a href="#work" class="btn-primary font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer" data-i18n="hero.cta1">View work</a>
+        <a href="#contact" class="btn-outline font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer" data-i18n="hero.cta2">Get in touch</a>
       </div>
     </div>
 
@@ -200,8 +328,8 @@
 <!-- STATS -->
 <section class="py-10 px-6 border-t border-white/5">
   <div class="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-    <div><p class="stat-num text-3xl accent-cyan">8</p><p class="font-mono text-xs text-[var(--muted)] mt-2">projects_shipped</p></div>
-    <div><p class="stat-num text-3xl accent-cyan">5</p><p class="font-mono text-xs text-[var(--muted)] mt-2">specialty_areas</p></div>
+    <div><p class="stat-num text-3xl accent-cyan">7</p><p class="font-mono text-xs text-[var(--muted)] mt-2">case_studies</p></div>
+    <div><p class="stat-num text-3xl accent-cyan">4</p><p class="font-mono text-xs text-[var(--muted)] mt-2">specialty_areas</p></div>
     <div><p class="stat-num text-3xl accent-cyan">&lt;24h</p><p class="font-mono text-xs text-[var(--muted)] mt-2">response_time</p></div>
     <div><p class="stat-num text-3xl accent-cyan">3</p><p class="font-mono text-xs text-[var(--muted)] mt-2">languages</p></div>
   </div>
@@ -212,20 +340,20 @@
   <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-10">
     <div>
       <p class="section-tag mb-3">// 01 · about</p>
-      <h2 class="font-display text-2xl font-bold">Who I am</h2>
+      <h2 class="font-display text-2xl font-bold" data-i18n="about.h">Who I am</h2>
     </div>
     <div class="md:col-span-2 text-[var(--muted)] leading-relaxed space-y-4 text-lg">
-      <p>
+      <p data-i18n="about.p1">
         I'm Vadim Melnic, a self-taught full-stack developer who owns projects end to end.
         Visual concept, art direction and the working build, with one person accountable
         for the final result instead of a relay race.
       </p>
-      <p>
+      <p data-i18n="about.p2">
         I care a lot about interfaces that stay fast on low-end devices. That matters for
         Telegram WebViews, where a lot of my work lives, and it shapes everything from
         asset budgets to animation choices.
       </p>
-      <p>
+      <p data-i18n="about.p3">
         Currently open for freelance on Fiverr and Upwork: mini apps, automation scripts,
         dashboards and websites.
       </p>
@@ -237,31 +365,31 @@
 <section id="services" class="py-24 px-6 border-t border-white/5">
   <div class="max-w-5xl mx-auto">
     <p class="section-tag mb-3">// 02 · services</p>
-    <h2 class="font-display text-2xl font-bold mb-12">What I can build for you</h2>
+    <h2 class="font-display text-2xl font-bold mb-12" data-i18n="svc.h">What I can build for you</h2>
     <div class="grid sm:grid-cols-2 gap-6">
 
       <div class="card rounded-xl p-6">
-        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg>
-        <h3 class="font-display text-base font-bold mb-2">Telegram Mini Apps &amp; Games</h3>
-        <p class="text-[var(--muted)] text-sm leading-relaxed">Interactive TMAs with Telegram SDK, Three.js/PixiJS rendering, haptics, running at 60fps even on budget phones.</p>
+        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></svg>
+        <h3 class="font-display text-base font-bold mb-2" data-i18n="svc.1h">Telegram Mini Apps &amp; Games</h3>
+        <p class="text-[var(--muted)] text-sm leading-relaxed" data-i18n="svc.1p">Interactive TMAs with Telegram SDK, Three.js/PixiJS rendering, haptics, running at 60fps even on budget phones.</p>
       </div>
 
       <div class="card rounded-xl p-6">
-        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 17l6-5-6-5"/><path d="M12 19h8"/></svg>
-        <h3 class="font-display text-base font-bold mb-2">Python Automation &amp; AI</h3>
-        <p class="text-[var(--muted)] text-sm leading-relaxed">Automation scripts, CLI assistants and AI chatbots grounded in your own data. Documented and easy to extend per client.</p>
+        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 17l6-5-6-5"/><path d="M12 19h8"/></svg>
+        <h3 class="font-display text-base font-bold mb-2" data-i18n="svc.2h">Python Automation &amp; AI</h3>
+        <p class="text-[var(--muted)] text-sm leading-relaxed" data-i18n="svc.2p">Automation scripts, CLI assistants and AI chatbots grounded in your own data. Documented and easy to extend per client.</p>
       </div>
 
       <div class="card rounded-xl p-6">
-        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-        <h3 class="font-display text-base font-bold mb-2">Websites &amp; Landing Pages</h3>
-        <p class="text-[var(--muted)] text-sm leading-relaxed">Custom sites, landing pages and live dashboards, designed and coded from scratch. Fast, responsive and easy to host. This site is one of them.</p>
+        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <h3 class="font-display text-base font-bold mb-2" data-i18n="svc.3h">Websites &amp; Landing Pages</h3>
+        <p class="text-[var(--muted)] text-sm leading-relaxed" data-i18n="svc.3p">Custom sites, landing pages and live dashboards, designed and coded from scratch. Fast, responsive and easy to host. This site is one of them.</p>
       </div>
 
       <div class="card rounded-xl p-6">
-        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>
-        <h3 class="font-display text-base font-bold mb-2">UI/UX &amp; Motion</h3>
-        <p class="text-[var(--muted)] text-sm leading-relaxed">Neon visual identities with purposeful micro-animations, built with Anime.js or GSAP and always respecting reduced motion.</p>
+        <svg class="w-8 h-8 mb-4" style="color:var(--cyan)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>
+        <h3 class="font-display text-base font-bold mb-2" data-i18n="svc.4h">UI/UX &amp; Motion</h3>
+        <p class="text-[var(--muted)] text-sm leading-relaxed" data-i18n="svc.4p">Neon visual identities with purposeful micro-animations, built with Anime.js or GSAP and always respecting reduced motion.</p>
       </div>
 
     </div>
@@ -272,29 +400,91 @@
 <section id="work" class="py-24 px-6 border-t border-white/5">
   <div class="max-w-5xl mx-auto">
     <p class="section-tag mb-3">// 03 · selected work</p>
-    <h2 class="font-display text-2xl font-bold mb-2">Case studies</h2>
-    <p class="text-[var(--muted)] mb-12 max-w-2xl">Self-directed projects built to sharpen and demonstrate my stack.</p>
+    <h2 class="font-display text-2xl font-bold mb-2" data-i18n="work.h">Case studies</h2>
+    <p class="text-[var(--muted)] mb-12 max-w-2xl" data-i18n="work.lead">Self-directed projects built to sharpen and demonstrate my stack.</p>
 
     <div class="space-y-16">
 
-      <!-- Case Study 1: DROPFIX -->
+      <!-- Case Study 1: Services Landing Page -->
+      <div>
+        <div class="grid md:grid-cols-2 gap-10 items-center mb-8">
+          <div>
+            <img src="assets/price-landing.webp" alt="Vadim Melnic services landing page: dark orange hero reading 'I build AI bots and websites that ship in days', with an animated android avatar whose eyes follow the cursor" class="shot" loading="lazy">
+            <p class="cap" data-i18n="cs1.cap">live landing · cursor-tracking hero · one static file</p>
+          </div>
+          <div>
+            <span class="chip px-3 py-1 rounded inline-block mb-4" style="border-color:rgba(255,46,136,.5); color:var(--pink)">featured · live client-facing page</span>
+            <h3 class="font-display text-xl font-bold mb-3" data-i18n="cs1.h">Services Landing: Priced-in-the-Open Freelance Page</h3>
+            <p class="text-[var(--muted)] leading-relaxed mb-4" data-i18n="cs1.p1">
+              <span class="text-white">Challenge:</span> most freelance pages hide the price behind
+              "contact us", so the visitor has to start a conversation before they know if it is even
+              worth their time. I wanted the opposite: the whole offer readable in one scroll.
+            </p>
+            <p class="text-[var(--muted)] leading-relaxed mb-5" data-i18n="cs1.p2">
+              <span class="text-white">Result:</span> a conversion-focused landing page with
+              <span class="text-white">four service cards carrying real price bands and delivery times</span>,
+              a written-only process section, and a
+              <span class="text-white">working chatbot demo that runs entirely in the browser</span>:
+              keyword-matched answers, no model, no API key, nothing leaving the page, so it costs
+              nothing at any traffic level. The hero avatar tracks the cursor, a scroll-progress rail
+              follows the reader, and every reveal respects
+              <span class="font-mono text-sm">prefers-reduced-motion</span>.
+              One HTML file, zero dependencies, zero backend, deployed on Vercel.
+            </p>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="chip px-3 py-1 rounded">landing-page</span>
+              <span class="chip px-3 py-1 rounded">vanilla-js</span>
+              <span class="chip px-3 py-1 rounded">zero-dependency</span>
+              <span class="chip px-3 py-1 rounded">conversion-copy</span>
+              <span class="chip px-3 py-1 rounded">vercel</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a href="https://price-landing.vercel.app/" target="_blank" rel="noopener" class="gh-link">↗ price-landing.vercel.app</a>
+              <a href="https://github.com/niktofy/price-landing" target="_blank" rel="noopener" class="gh-link" data-i18n="link.src">↗ source on github</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mb-4">
+          <button class="gallery-btn font-mono text-sm px-6 py-3 rounded-lg cursor-pointer" aria-expanded="false" aria-controls="landing-gallery">
+            <span class="arrow">▾</span> <span class="gallery-label">view product screenshots</span> <span class="count">2</span>
+          </button>
+        </div>
+
+        <div id="landing-gallery" class="gallery-panel">
+          <div class="gallery-inner">
+            <div class="space-y-4 pt-4">
+              <div>
+                <img src="assets/price-landing-pricing.webp" alt="Landing page pricing section: four service cards for Telegram bots, AI chatbots with RAG, landing pages and automations, each with a euro price range and a delivery time" class="shot" loading="lazy">
+                <p class="cap" data-i18n="cs1.cap2">four services · public price bands · delivery times</p>
+              </div>
+              <div>
+                <img src="assets/price-landing-chatbot.webp" alt="Landing page chatbot demo panel with suggested question chips and a typed answer, labelled scripted demo, running offline with no API call" class="shot" loading="lazy">
+                <p class="cap" data-i18n="cs1.cap3">in-page chatbot demo · offline · no api call · no cost per message</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case Study 2: DROPFIX -->
       <div>
         <div class="grid md:grid-cols-2 gap-10 items-center mb-8">
           <div class="flex justify-center">
             <div style="max-width:300px">
               <img src="assets/dropfix-app.webp" alt="DROPFIX mining app: DFX token live price chart, mining hall with 8 animated GPU rigs, active mining timer, 828 users online" class="shot" loading="lazy">
-              <p class="cap">player app · dfx token · mining hall · live price</p>
+              <p class="cap" data-i18n="cs2.cap">player app · dfx token · mining hall · live price</p>
             </div>
           </div>
           <div>
-            <span class="chip px-3 py-1 rounded inline-block mb-4" style="border-color:rgba(255,46,136,.5); color:var(--pink)">featured · full product</span>
-            <h3 class="font-display text-xl font-bold mb-3">DROPFIX: Crypto Mining Platform</h3>
-            <p class="text-[var(--muted)] leading-relaxed mb-4">
+            <span class="chip px-3 py-1 rounded inline-block mb-4" style="border-color:rgba(255,46,136,.5); color:var(--pink)">full product · shipped</span>
+            <h3 class="font-display text-xl font-bold mb-3" data-i18n="cs2.h">DROPFIX: Crypto Mining Platform</h3>
+            <p class="text-[var(--muted)] leading-relaxed mb-4" data-i18n="cs2.p1">
               <span class="text-white">Challenge:</span> build a complete play-to-earn mining platform as a
               Telegram Mini App. Not just the game, but the token economy, real crypto payment rails and
               the operations tools behind it.
             </p>
-            <p class="text-[var(--muted)] leading-relaxed mb-5">
+            <p class="text-[var(--muted)] leading-relaxed mb-5" data-i18n="cs2.p2">
               <span class="text-white">Result:</span> a shipped two-sided product.
               <span class="text-white">Player side:</span> DFX token with live price feed and 24h charts,
               a mining hall of tiered animated GPU rigs, real <span class="text-white">BTC / LTC / USDT
@@ -310,13 +500,13 @@
               <span class="chip px-3 py-1 rounded">admin-console</span>
               <span class="chip px-3 py-1 rounded">full-stack</span>
             </div>
-            <a href="https://github.com/niktofy/dropfix" class="gh-link">↗ github.com/niktofy/dropfix</a>
+            <a href="https://github.com/niktofy/dropfix" target="_blank" rel="noopener" class="gh-link">↗ github.com/niktofy/dropfix</a>
           </div>
         </div>
 
         <div class="text-center mb-4">
           <button id="dropfix-toggle" class="gallery-btn font-mono text-sm px-6 py-3 rounded-lg cursor-pointer" aria-expanded="false" aria-controls="dropfix-gallery">
-            <span class="arrow">▾</span> view product screenshots <span class="count">4</span>
+            <span class="arrow">▾</span> <span class="gallery-label">view product screenshots</span> <span class="count">4</span>
           </button>
         </div>
 
@@ -325,40 +515,40 @@
           <div class="grid sm:grid-cols-2 gap-4 mb-4 pt-4">
             <div>
               <img src="assets/dropfix-admin.webp" alt="DROPFIX admin console: user stats, DF balance, active miners, deposits and withdrawals, manager role management, crypto balance crediting" class="shot" loading="lazy">
-              <p class="cap">admin console · roles · balances · withdrawal review</p>
+              <p class="cap" data-i18n="cs2.cap2">admin console · roles · balances · withdrawal review</p>
             </div>
             <div>
               <img src="assets/dropfix-charts.webp" alt="DROPFIX admin analytics: deposit and withdrawal charts, new users, activity summary" class="shot" loading="lazy">
-              <p class="cap">analytics · deposits · withdrawals · user growth</p>
+              <p class="cap" data-i18n="cs2.cap3">analytics · deposits · withdrawals · user growth</p>
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
             <div>
               <img src="assets/dropfix-deposit.webp" alt="DROPFIX deposit flow: BTC, LTC, USDT with TRC20 and BEP20 networks, QR code and unique deposit address" class="shot" loading="lazy">
-              <p class="cap">real deposits · trc20/bep20 + qr</p>
+              <p class="cap" data-i18n="cs2.cap4">real deposits · trc20/bep20 + qr</p>
             </div>
             <div>
               <img src="assets/dropfix-wheel.webp" alt="DROPFIX wheel of fortune: spin rewards with DFX prizes, boosts and purchasable spin credits" class="shot" loading="lazy">
-              <p class="cap">wheel of fortune · monetized spins</p>
+              <p class="cap" data-i18n="cs2.cap5">wheel of fortune · monetized spins</p>
             </div>
           </div>
           </div>
         </div>
       </div>
 
-      <!-- Case Study 2: Focus Quest -->
+      <!-- Case Study 3: Focus Quest -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div class="md:order-2">
-          <img src="assets/focusquest.png" alt="Focus Quest, gamified productivity desktop app: XP and HP bars, weekly boss with health bar, quest list" class="shot" loading="lazy">
+          <img src="assets/focusquest.webp" alt="Focus Quest, gamified productivity desktop app: XP and HP bars, weekly boss with health bar, quest list" class="shot" loading="lazy">
         </div>
         <div class="md:order-1">
           <span class="chip px-3 py-1 rounded inline-block mb-4">desktop_app · shipped</span>
-          <h3 class="font-display text-xl font-bold mb-3">Focus Quest: Gamified Productivity App</h3>
-          <p class="text-[var(--muted)] leading-relaxed mb-4">
+          <h3 class="font-display text-xl font-bold mb-3" data-i18n="cs3.h">Focus Quest: Gamified Productivity App</h3>
+          <p class="text-[var(--muted)] leading-relaxed mb-4" data-i18n="cs3.p1">
             <span class="text-white">Challenge:</span> task managers feel flat and don't motivate follow-through,
             so I turned productivity into an RPG.
           </p>
-          <p class="text-[var(--muted)] leading-relaxed mb-5">
+          <p class="text-[var(--muted)] leading-relaxed mb-5" data-i18n="cs3.p2">
             <span class="text-white">Result:</span> a full native desktop app: XP &amp; HP system, weekly boss
             fights, skill tree, streaks, focus timer, voice commands and system-tray integration.
             Django backend + PyWebView native shell.
@@ -370,25 +560,25 @@
             <span class="chip px-3 py-1 rounded">speech-recognition</span>
             <span class="chip px-3 py-1 rounded">gamification</span>
           </div>
-          <a href="https://github.com/niktofy/focus-quest" class="gh-link">↗ github.com/niktofy/focus-quest</a>
+          <a href="https://github.com/niktofy/focus-quest" target="_blank" rel="noopener" class="gh-link">↗ github.com/niktofy/focus-quest</a>
         </div>
       </div>
 
-      <!-- Case Study 3: NeonHUD -->
+      <!-- Case Study 4: NeonHUD -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <img src="assets/neonhud-v3.png" alt="NeonHUD, interactive crypto dashboard: coin selector cards, 24H/7D/30D timeframes, search, watchlist stars and 7-day sparklines for ten coins, USD converter" class="shot" loading="lazy">
-          <p class="cap">10 coins · timeframes · watchlist · sparklines · converter</p>
+          <img src="assets/neonhud-v3.webp" alt="NeonHUD, interactive crypto dashboard: coin selector cards, 24H/7D/30D timeframes, search, watchlist stars and 7-day sparklines for ten coins, USD converter" class="shot" loading="lazy">
+          <p class="cap" data-i18n="cs4.cap">10 coins · timeframes · watchlist · sparklines · converter</p>
         </div>
         <div>
           <span class="chip px-3 py-1 rounded inline-block mb-4">live_app · real data</span>
-          <h3 class="font-display text-xl font-bold mb-3">NeonHUD: Interactive Crypto Markets App</h3>
-          <p class="text-[var(--muted)] leading-relaxed mb-4">
+          <h3 class="font-display text-xl font-bold mb-3" data-i18n="cs4.h">NeonHUD: Interactive Crypto Markets App</h3>
+          <p class="text-[var(--muted)] leading-relaxed mb-4" data-i18n="cs4.p1">
             <span class="text-white">Challenge:</span> a full trading-desk experience on
             <span class="text-white">real market data</span>: interactive, stateful and fast, from a single
             HTML file with no backend.
           </p>
-          <p class="text-[var(--muted)] leading-relaxed mb-5">
+          <p class="text-[var(--muted)] leading-relaxed mb-5" data-i18n="cs4.p2">
             <span class="text-white">Result:</span> 10 live coins from the CoinGecko API with
             <span class="text-white">click-to-chart selection, 24H/7D/30D timeframes, search, sortable
             columns, 7-day sparklines per coin, a persistent ★ watchlist (localStorage) and a live USD ⇄
@@ -401,24 +591,24 @@
             <span class="chip px-3 py-1 rounded">real-time</span>
             <span class="chip px-3 py-1 rounded">zero-backend</span>
           </div>
-          <a href="https://github.com/niktofy/Portofolio/blob/main/demos/neonhud.html" class="gh-link">↗ source on github</a>
+          <a href="https://github.com/niktofy/Portofolio/blob/main/demos/neonhud.html" target="_blank" rel="noopener" class="gh-link" data-i18n="link.src">↗ source on github</a>
         </div>
       </div>
 
-      <!-- Case Study 4: SupportDesk AI -->
+      <!-- Case Study 5: SupportDesk AI -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div class="md:order-2">
-          <img src="assets/supportdesk.png" alt="SupportDesk AI chat widget on a demo furniture store, real conversation with answers citing their knowledge-base sources" class="shot" loading="lazy">
-          <p class="cap">live conversation · every answer cites its source doc</p>
+          <img src="assets/supportdesk.webp" alt="SupportDesk AI chat widget on a demo furniture store, real conversation with answers citing their knowledge-base sources" class="shot" loading="lazy">
+          <p class="cap" data-i18n="cs5.cap">live conversation · every answer cites its source doc</p>
         </div>
         <div class="md:order-1">
           <span class="chip px-3 py-1 rounded inline-block mb-4" style="border-color:rgba(0,229,255,.5); color:var(--cyan)">ai · open source</span>
-          <h3 class="font-display text-xl font-bold mb-3">SupportDesk AI: Support Chatbot Widget</h3>
-          <p class="text-[var(--muted)] leading-relaxed mb-4">
+          <h3 class="font-display text-xl font-bold mb-3" data-i18n="cs5.h">SupportDesk AI: Support Chatbot Widget</h3>
+          <p class="text-[var(--muted)] leading-relaxed mb-4" data-i18n="cs5.p1">
             <span class="text-white">Challenge:</span> businesses want an AI support chat on their site, but
             pure-LLM bots hallucinate prices and policies, and that is a real liability.
           </p>
-          <p class="text-[var(--muted)] leading-relaxed mb-5">
+          <p class="text-[var(--muted)] leading-relaxed mb-5" data-i18n="cs5.p2">
             <span class="text-white">Result:</span> an embeddable chat widget with a
             <span class="text-white">retrieval-grounded brain</span>: it indexes the client's own docs and
             every answer cites its source. An optional AI mode composes replies strictly from retrieved
@@ -430,28 +620,29 @@
             <span class="chip px-3 py-1 rounded">rag / retrieval</span>
             <span class="chip px-3 py-1 rounded">embeddable-widget</span>
           </div>
-          <a href="https://github.com/niktofy/supportdesk-ai" class="gh-link">↗ github.com/niktofy/supportdesk-ai</a>
+          <a href="https://github.com/niktofy/supportdesk-ai" target="_blank" rel="noopener" class="gh-link">↗ github.com/niktofy/supportdesk-ai</a>
         </div>
       </div>
 
-      <!-- Case Study 5: This Website -->
+      <!-- Case Study 6: This Website -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <img src="assets/website.png" alt="This portfolio website, neon terminal hero with animated typing, custom design system" class="shot" loading="lazy">
-          <p class="cap">you're looking at it · designed & built from scratch</p>
+          <img src="assets/website.webp" alt="This portfolio website: neon terminal hero with animated typing, EN/RU language switch in the nav, custom design system" class="shot" loading="lazy">
+          <p class="cap" data-i18n="cs6.cap">you're looking at it · designed &amp; built from scratch</p>
         </div>
         <div>
           <span class="chip px-3 py-1 rounded inline-block mb-4">web_design · live</span>
-          <h3 class="font-display text-xl font-bold mb-3">This Website: Custom Portfolio Site</h3>
-          <p class="text-[var(--muted)] leading-relaxed mb-4">
+          <h3 class="font-display text-xl font-bold mb-3" data-i18n="cs6.h">This Website: Custom Portfolio Site</h3>
+          <p class="text-[var(--muted)] leading-relaxed mb-4" data-i18n="cs6.p1">
             <span class="text-white">Challenge:</span> stand out among template portfolios with a fully
             custom identity, designed, built and shipped without any site builder.
           </p>
-          <p class="text-[var(--muted)] leading-relaxed mb-5">
+          <p class="text-[var(--muted)] leading-relaxed mb-5" data-i18n="cs6.p2">
             <span class="text-white">Result:</span> a complete design system (Unbounded / Space Grotesk /
-            JetBrains Mono, neon pink &amp; cyan), an animated terminal hero, scroll-reveal motion that
-            respects <span class="font-mono text-sm">prefers-reduced-motion</span>, responsive from 375px up,
-            optimized WebP images. One HTML file, no build step, deployed via GitHub Actions.
+            JetBrains Mono, neon pink &amp; cyan), an animated terminal hero, an EN/RU language switch,
+            scroll-reveal motion that respects <span class="font-mono text-sm">prefers-reduced-motion</span>,
+            keyboard-accessible screenshot lightbox, responsive from 375px up, optimized WebP images.
+            One HTML file, no build step, deployed via GitHub Actions.
             I build landing pages and sites like this for clients.
           </p>
           <div class="flex flex-wrap gap-2 mb-5">
@@ -459,26 +650,27 @@
             <span class="chip px-3 py-1 rounded">tailwind</span>
             <span class="chip px-3 py-1 rounded">animations</span>
             <span class="chip px-3 py-1 rounded">accessibility</span>
+            <span class="chip px-3 py-1 rounded">i18n</span>
             <span class="chip px-3 py-1 rounded">ci/cd</span>
           </div>
-          <a href="https://github.com/niktofy/Portofolio" class="gh-link">↗ github.com/niktofy/Portofolio</a>
+          <a href="https://github.com/niktofy/Portofolio" target="_blank" rel="noopener" class="gh-link">↗ github.com/niktofy/Portofolio</a>
         </div>
       </div>
 
-      <!-- Case Study: Rick Assistant v2 -->
+      <!-- Case Study 7: Rick Assistant v2 -->
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <img src="assets/rick2.png" alt="Rick Assistant: JARVIS-style dashboard with animated portal, live system widgets and a conversation panel showing a voice command" class="shot" loading="lazy">
-          <p class="cap">voice + text commands · live system widgets · portal-green ui</p>
+          <img src="assets/rick2.webp" alt="Rick Assistant: JARVIS-style dashboard with animated portal, live system widgets and a conversation panel showing a voice command" class="shot" loading="lazy">
+          <p class="cap" data-i18n="cs7.cap">voice + text commands · live system widgets · portal-green ui</p>
         </div>
         <div>
           <span class="chip px-3 py-1 rounded inline-block mb-4">desktop_app · open source</span>
-          <h3 class="font-display text-xl font-bold mb-3">Rick Assistant: Voice Desktop Assistant</h3>
-          <p class="text-[var(--muted)] leading-relaxed mb-4">
+          <h3 class="font-display text-xl font-bold mb-3" data-i18n="cs7.h">Rick Assistant: Voice Desktop Assistant</h3>
+          <p class="text-[var(--muted)] leading-relaxed mb-4" data-i18n="cs7.p1">
             <span class="text-white">Challenge:</span> a JARVIS for your PC that actually does things, with a
             personality of its own instead of another gray tray utility.
           </p>
-          <p class="text-[var(--muted)] leading-relaxed mb-5">
+          <p class="text-[var(--muted)] leading-relaxed mb-5" data-i18n="cs7.p2">
             <span class="text-white">Result:</span> a voice-controlled assistant with an animated portal at its
             core. Say or type <span class="font-mono text-sm">"open youtube"</span>,
             <span class="font-mono text-sm">"launch notepad"</span> or
@@ -494,7 +686,7 @@
             <span class="chip px-3 py-1 rounded">pywebview</span>
             <span class="chip px-3 py-1 rounded">automation</span>
           </div>
-          <a href="https://github.com/niktofy/rick-assistant" class="gh-link">↗ github.com/niktofy/rick-assistant</a>
+          <a href="https://github.com/niktofy/rick-assistant" target="_blank" rel="noopener" class="gh-link">↗ github.com/niktofy/rick-assistant</a>
         </div>
       </div>
 
@@ -506,7 +698,7 @@
 <section id="skills" class="py-24 px-6 border-t border-white/5">
   <div class="max-w-5xl mx-auto">
     <p class="section-tag mb-3">// 04 · skills</p>
-    <h2 class="font-display text-2xl font-bold mb-12">Tools I work with</h2>
+    <h2 class="font-display text-2xl font-bold mb-12" data-i18n="skills.h">Tools I work with</h2>
     <div class="flex flex-wrap gap-3">
       <span class="chip px-4 py-2 rounded text-sm">python</span>
       <span class="chip px-4 py-2 rounded text-sm">javascript</span>
@@ -527,43 +719,273 @@
 <section id="contact" class="py-28 px-6 border-t border-white/5 bg-grid">
   <div class="max-w-3xl mx-auto text-center">
     <p class="section-tag mb-3">// 05 · contact</p>
-    <h2 class="font-display text-2xl sm:text-3xl font-bold mb-6">Let's build something</h2>
-    <p class="text-[var(--muted)] mb-10 max-w-xl mx-auto leading-relaxed">
-      Open for freelance: Telegram Mini Apps, Python automation, dashboards and websites.
+    <h2 class="font-display text-2xl sm:text-3xl font-bold mb-6" data-i18n="contact.h">Let's build something</h2>
+    <p class="text-[var(--muted)] mb-10 max-w-xl mx-auto leading-relaxed" data-i18n="contact.p">
+      Open for freelance: landing pages, AI chatbots, Telegram Mini Apps, automation and dashboards.
       Free scoping, fixed quotes, response within 24h.
     </p>
     <div class="flex flex-wrap justify-center gap-4">
-      <a href="mailto:vadimash204@gmail.com" class="btn-primary font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">vadimash204@gmail.com</a>
-      <a href="https://github.com/niktofy" class="btn-outline font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">GitHub</a>
+      <a data-contact="email" class="btn-primary font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">&nbsp;</a>
+      <a data-contact="telegram" target="_blank" rel="noopener" class="btn-outline font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">&nbsp;</a>
+      <a href="https://github.com/niktofy" target="_blank" rel="noopener" class="btn-outline font-medium px-6 py-3 rounded-lg transition-all duration-200 cursor-pointer">GitHub</a>
     </div>
+    <p class="mt-10">
+      <a href="https://price-landing.vercel.app/" target="_blank" rel="noopener" class="gh-link" data-i18n="contact.prices">↗ see my prices &amp; services, in the open</a>
+    </p>
   </div>
 </section>
 
+</main>
+
 <footer class="py-8 px-6 text-center font-mono text-xs text-[var(--muted)] border-t border-white/5">
-  © <span id="year"></span> vadim.melnic · built with care, one neon pixel at a time_
+  <p class="mb-3">
+    <a data-contact="email-plain" class="hover:text-white transition-colors duration-200">&nbsp;</a>
+    <span class="mx-2 opacity-50" aria-hidden="true">/</span>
+    <a data-contact="telegram-plain" target="_blank" rel="noopener" class="hover:text-white transition-colors duration-200">&nbsp;</a>
+    <span class="mx-2 opacity-50" aria-hidden="true">/</span>
+    <a href="https://github.com/niktofy" target="_blank" rel="noopener" class="hover:text-white transition-colors duration-200">github</a>
+  </p>
+  © <span id="year"></span> vadim.melnic <span data-i18n="footer.tag">· built with care, one neon pixel at a time_</span>
 </footer>
 
+<!-- Screenshot lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot">
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close" data-i18n-aria="a11y.close">✕</button>
+  <figure class="text-center">
+    <img id="lightbox-img" src="" alt="">
+    <figcaption id="lightbox-cap"></figcaption>
+  </figure>
+</div>
+
 <script>
+(function () {
+  "use strict";
+
   document.getElementById('year').textContent = new Date().getFullYear();
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // --- DROPFIX gallery toggle ---
-  const gToggle = document.getElementById('dropfix-toggle');
-  const gPanel = document.getElementById('dropfix-gallery');
-  gToggle.addEventListener('click', () => {
-    const open = gPanel.classList.toggle('open');
-    gToggle.classList.toggle('open', open);
-    gToggle.setAttribute('aria-expanded', open);
-    gPanel.style.maxHeight = open ? gPanel.scrollHeight + 'px' : '0px';
-    gPanel.style.opacity = open ? '1' : '0';
-    gToggle.querySelector('.arrow').nextSibling.textContent = open ? ' hide screenshots ' : ' view product screenshots ';
-    if (open) setTimeout(() => { gPanel.style.maxHeight = gPanel.scrollHeight + 'px'; }, 350);
+  /* ---- contact: one source of truth for the address and the handle ---- */
+  const CONTACT = { email: 'vadim.melnic.dev@gmail.com', telegram: 'snake_glitch' };
+  const tgUrl = 'https://t.me/' + CONTACT.telegram;
+  const fill = (sel, href, text) => document.querySelectorAll(sel).forEach(el => {
+    el.setAttribute('href', href);
+    el.textContent = text;
+  });
+  fill('[data-contact="email"]',         'mailto:' + CONTACT.email, CONTACT.email);
+  fill('[data-contact="email-plain"]',   'mailto:' + CONTACT.email, CONTACT.email);
+  fill('[data-contact="telegram"]',      tgUrl, 'Telegram @' + CONTACT.telegram);
+  fill('[data-contact="telegram-plain"]', tgUrl, '@' + CONTACT.telegram);
+
+  /* ---- language: EN lives in the markup, RU lives here ---- */
+  const RU = {
+    "a11y.skip": "Перейти к содержимому",
+    "hero.tag": "// full-stack разработчик · открыт для фриланса",
+    "hero.lead": 'Я делаю <span class="text-white">лендинги</span>, <span class="text-white">AI-чат-боты</span>, <span class="text-white">Telegram Mini Apps</span> и <span class="text-white">автоматизацию на Python</span> — от визуальной концепции до готового продукта.',
+    "hero.cta1": "Смотреть работы",
+    "hero.cta2": "Связаться",
+
+    "about.h": "Обо мне",
+    "about.p1": "Меня зовут Вадим Мельник. Я full-stack разработчик-самоучка, который ведёт проект от начала до конца: визуальная концепция, арт-дирекшн и рабочая сборка. За результат отвечает один человек, а не эстафета из подрядчиков.",
+    "about.p2": "Мне важно, чтобы интерфейс оставался быстрым на слабых устройствах. Это критично для Telegram WebView, где живёт большая часть моей работы, и определяет всё — от веса ассетов до выбора анимаций.",
+    "about.p3": "Сейчас открыт для фриланса на Fiverr и Upwork: мини-приложения, скрипты автоматизации, дашборды и сайты.",
+
+    "svc.h": "Что я могу для вас сделать",
+    "svc.1h": "Telegram Mini Apps и игры",
+    "svc.1p": "Интерактивные TMA на Telegram SDK с рендером на Three.js/PixiJS и хаптикой — 60 fps даже на бюджетных телефонах.",
+    "svc.2h": "Автоматизация и AI на Python",
+    "svc.2p": "Скрипты автоматизации, CLI-ассистенты и AI-чат-боты, работающие на ваших собственных данных. С документацией и простым расширением под клиента.",
+    "svc.3h": "Сайты и лендинги",
+    "svc.3p": "Сайты, лендинги и живые дашборды, спроектированные и написанные с нуля. Быстрые, адаптивные и простые в хостинге. Этот сайт — один из них.",
+    "svc.4h": "UI/UX и анимация",
+    "svc.4p": "Неоновая визуальная айдентика с осмысленными микроанимациями на Anime.js или GSAP, всегда с уважением к reduced motion.",
+
+    "work.h": "Кейсы",
+    "work.lead": "Собственные проекты, сделанные чтобы прокачать и показать мой стек.",
+    "link.src": "↗ исходники на github",
+
+    "cs1.h": "Лендинг услуг: цены открыто, без «свяжитесь с нами»",
+    "cs1.p1": '<span class="text-white">Задача:</span> большинство фриланс-страниц прячут цену за «свяжитесь с нами», и посетителю приходится начинать разговор ещё до того, как он поймёт, стоит ли это его времени. Я хотел обратного: всё предложение читается за один скролл.',
+    "cs1.p2": '<span class="text-white">Результат:</span> лендинг, заточенный под конверсию: <span class="text-white">четыре карточки услуг с реальными вилками цен и сроками</span>, блок процесса «только переписка» и <span class="text-white">рабочее демо чат-бота, которое целиком работает в браузере</span>: ответы по ключевым словам, без модели, без API-ключа, ничего не уходит со страницы — поэтому оно ничего не стоит при любом трафике. Аватар в шапке следит за курсором, полоса прогресса ведёт читателя по странице, а все появления уважают <span class="font-mono text-sm">prefers-reduced-motion</span>. Один HTML-файл, ноль зависимостей, ноль бэкенда, задеплоено на Vercel.',
+    "cs1.cap": "живой лендинг · шапка следит за курсором · один статический файл",
+    "cs1.cap2": "четыре услуги · открытые вилки цен · сроки",
+    "cs1.cap3": "демо чат-бота прямо на странице · офлайн · без api · без затрат на сообщение",
+
+    "cs2.h": "DROPFIX: платформа крипто-майнинга",
+    "cs2.p1": '<span class="text-white">Задача:</span> собрать полноценную play-to-earn майнинг-платформу как Telegram Mini App. Не только игру, но и экономику токена, реальные крипто-платежи и операционные инструменты за ними.',
+    "cs2.p2": '<span class="text-white">Результат:</span> выпущенный двусторонний продукт. <span class="text-white">Со стороны игрока:</span> токен DFX с живым курсом и 24-часовыми графиками, майнинг-зал с анимированными GPU-ригами разных уровней, реальные <span class="text-white">ввод и вывод BTC / LTC / USDT</span> (TRC20 и BEP20, персональные QR-адреса) и колесо фортуны с покупкой спинов. <span class="text-white">Со стороны оператора:</span> полноценная админка: роли, очередь проверки выводов, рассылка пользователям, журнал действий, SQL-раннер и аналитика выручки.',
+    "cs2.cap": "приложение игрока · токен dfx · майнинг-зал · живой курс",
+    "cs2.cap2": "админка · роли · балансы · проверка выводов",
+    "cs2.cap3": "аналитика · пополнения · выводы · рост пользователей",
+    "cs2.cap4": "реальные пополнения · trc20/bep20 + qr",
+    "cs2.cap5": "колесо фортуны · платные спины",
+
+    "cs3.h": "Focus Quest: геймифицированный трекер задач",
+    "cs3.p1": '<span class="text-white">Задача:</span> таск-менеджеры ощущаются плоско и не мотивируют доводить дела до конца, поэтому я превратил продуктивность в RPG.',
+    "cs3.p2": '<span class="text-white">Результат:</span> полноценное десктопное приложение: система XP и HP, еженедельные боссы, дерево навыков, серии, таймер фокуса, голосовые команды и интеграция с системным треем. Бэкенд на Django + нативная оболочка PyWebView.',
+
+    "cs4.h": "NeonHUD: интерактивное приложение крипторынков",
+    "cs4.p1": '<span class="text-white">Задача:</span> ощущение полноценного торгового терминала на <span class="text-white">реальных рыночных данных</span>: интерактивно, с состоянием и быстро — из одного HTML-файла без бэкенда.',
+    "cs4.p2": '<span class="text-white">Результат:</span> 10 монет в реальном времени через API CoinGecko: <span class="text-white">выбор монеты кликом с перерисовкой графика, таймфреймы 24H/7D/30D, поиск, сортировка колонок, 7-дневные спарклайны по каждой монете, постоянный ★ watchlist (localStorage) и живой конвертер USD ⇄ монета</span>, плюс аккуратный переход на симулированные данные, когда API недоступен.',
+    "cs4.cap": "10 монет · таймфреймы · watchlist · спарклайны · конвертер",
+
+    "cs5.h": "SupportDesk AI: виджет чат-бота поддержки",
+    "cs5.p1": '<span class="text-white">Задача:</span> бизнесу нужен AI-чат поддержки на сайте, но чистые LLM-боты выдумывают цены и условия, а это уже реальный риск.',
+    "cs5.p2": '<span class="text-white">Результат:</span> встраиваемый чат-виджет с <span class="text-white">мозгом на retrieval</span>: он индексирует документы самого клиента, и каждый ответ ссылается на источник. Опциональный AI-режим формулирует ответ строго из найденного контекста, с автоматическим откатом. Встраивание в две строки на любом сайте, под ваш бренд, без зависимостей.',
+    "cs5.cap": "живой диалог · каждый ответ ссылается на свой документ",
+
+    "cs6.h": "Этот сайт: портфолио, сделанное с нуля",
+    "cs6.p1": '<span class="text-white">Задача:</span> выделиться среди шаблонных портфолио полностью собственной айдентикой — спроектированной, написанной и выпущенной без конструкторов сайтов.',
+    "cs6.p2": '<span class="text-white">Результат:</span> целостная дизайн-система (Unbounded / Space Grotesk / JetBrains Mono, неоновый розовый и циан), анимированная терминальная шапка, переключатель языка EN/RU, появление по скроллу с уважением к <span class="font-mono text-sm">prefers-reduced-motion</span>, лайтбокс скриншотов с управлением с клавиатуры, адаптив от 375px, оптимизированные WebP-картинки. Один HTML-файл, без сборки, деплой через GitHub Actions. Такие лендинги и сайты я делаю и для клиентов.',
+    "cs6.cap": "вы смотрите на него · спроектирован и написан с нуля",
+
+    "cs7.h": "Rick Assistant: голосовой ассистент для десктопа",
+    "cs7.p1": '<span class="text-white">Задача:</span> JARVIS для вашего ПК, который действительно что-то делает, и со своим характером вместо очередной серой утилиты в трее.',
+    "cs7.p2": '<span class="text-white">Результат:</span> голосовой ассистент с анимированным порталом в центре. Скажите или напишите <span class="font-mono text-sm">"open youtube"</span>, <span class="font-mono text-sm">"launch notepad"</span> или <span class="font-mono text-sm">"search anything"</span> — он выполнит, ответит вслух и запишет всё в чат. Виджеты дашборда показывают RAM, диски и аптайм, а файловые автоматизации (разбор загрузок, чистка temp, пакетное переименование) сначала прогоняются вхолостую, прежде чем что-то тронуть. Новые команды добавляются одной функцией на Python.',
+    "cs7.cap": "голос и текст · живые системные виджеты · портально-зелёный ui",
+
+    "skills.h": "Инструменты, с которыми я работаю",
+
+    "contact.h": "Давайте что-нибудь построим",
+    "contact.p": "Открыт для фриланса: лендинги, AI-чат-боты, Telegram Mini Apps, автоматизация и дашборды. Оценка бесплатно, фикс-прайс, ответ в течение 24 часов.",
+    "contact.prices": "↗ мои цены и услуги, открыто",
+
+    "footer.tag": "· сделано с любовью, по одному неоновому пикселю_",
+
+    "a11y.menu": "Открыть меню",
+    "a11y.close": "Закрыть"
+  };
+
+  // Labels the scripts write at runtime, so they need both languages here.
+  const RUNTIME = {
+    en: { show: 'view product screenshots', hide: 'hide screenshots', zoom: 'Enlarge screenshot' },
+    ru: { show: 'смотреть скриншоты продукта', hide: 'скрыть скриншоты', zoom: 'Увеличить скриншот' }
+  };
+
+  // Snapshot the English markup once, so switching back is lossless.
+  const EN = {};
+  document.querySelectorAll('[data-i18n]').forEach(el => { EN[el.dataset.i18n] = el.innerHTML; });
+  const EN_ARIA = {};
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => { EN_ARIA[el.dataset.i18nAria] = el.getAttribute('aria-label'); });
+
+  let lang = 'en';
+  const t = key => (lang === 'ru' ? RU[key] : EN[key]) || EN[key] || '';
+
+  function setLang(next) {
+    lang = (next === 'ru') ? 'ru' : 'en';
+    const dict = lang === 'ru' ? RU : EN;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = dict[el.dataset.i18n];
+      if (v !== undefined) el.innerHTML = v;
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      const v = lang === 'ru' ? RU[el.dataset.i18nAria] : EN_ARIA[el.dataset.i18nAria];
+      if (v !== undefined) el.setAttribute('aria-label', v);
+    });
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-switch button').forEach(b => {
+      b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+    });
+    syncGalleryLabels();
+    document.querySelectorAll('.shot-btn').forEach(b => b.setAttribute('aria-label', RUNTIME[lang].zoom));
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+  }
+
+  document.querySelectorAll('.lang-switch button').forEach(b => {
+    b.addEventListener('click', () => setLang(b.dataset.lang));
   });
 
-  // --- terminal typing loop ---
+  /* ---- mobile menu ---- */
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuToggle.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(open));
+  });
+  mobileMenu.addEventListener('click', e => {
+    if (e.target.tagName === 'A') {
+      mobileMenu.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  document.addEventListener('click', e => {
+    if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+      mobileMenu.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* ---- screenshot galleries (one toggle per case study) ---- */
+  const galleries = [];
+  document.querySelectorAll('.gallery-btn[aria-controls]').forEach(btn => {
+    const panel = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!panel) return;
+    galleries.push({ btn, panel });
+    btn.addEventListener('click', () => {
+      const open = panel.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+      panel.style.maxHeight = open ? panel.scrollHeight + 'px' : '0px';
+      panel.style.opacity = open ? '1' : '0';
+      syncGalleryLabels();
+      // Lazy images finish loading after the panel opens, so re-measure.
+      if (open) setTimeout(() => { panel.style.maxHeight = panel.scrollHeight + 'px'; }, 350);
+    });
+  });
+  function syncGalleryLabels() {
+    galleries.forEach(({ btn, panel }) => {
+      const open = panel.classList.contains('open');
+      btn.querySelector('.gallery-label').textContent = RUNTIME[lang][open ? 'hide' : 'show'];
+    });
+  }
+
+  /* ---- screenshot lightbox ----
+     Each shot is wrapped in a real button so it is reachable by keyboard and
+     announced as a control, without touching the markup by hand. */
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  const lbCap = document.getElementById('lightbox-cap');
+  const lbClose = document.getElementById('lightbox-close');
+  let lastFocus = null;
+
+  document.querySelectorAll('img.shot').forEach(img => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'shot-btn';
+    btn.setAttribute('aria-label', RUNTIME.en.zoom);
+    img.parentNode.insertBefore(btn, img);
+    btn.appendChild(img);
+    btn.addEventListener('click', () => openLightbox(img));
+  });
+
+  function openLightbox(img) {
+    lastFocus = document.activeElement;
+    lbImg.src = img.currentSrc || img.src;
+    lbImg.alt = img.alt;
+    const cap = img.closest('div').querySelector('.cap');
+    lbCap.textContent = cap ? cap.textContent.trim() : '';
+    lb.setAttribute('open', '');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+  function closeLightbox() {
+    lb.removeAttribute('open');
+    lbImg.src = '';
+    document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  lbClose.addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lb.hasAttribute('open')) closeLightbox();
+    // Only one control inside, so keep focus on it.
+    if (e.key === 'Tab' && lb.hasAttribute('open')) { e.preventDefault(); lbClose.focus(); }
+  });
+
+  /* ---- terminal typing loop ---- */
   const term = document.getElementById('term');
   const script = [
     {cmd: 'whoami', out: ['vadim.melnic · full-stack developer']},
+    {cmd: 'vadim build --type landing --prices public', out: ['<span class="t-ok">✓</span> shipped: price-landing · live on vercel']},
     {cmd: 'vadim build --type telegram-mini-app', out: ['<span class="t-ok">✓</span> shipped: crypto mining simulator']},
     {cmd: 'vadim build --type dashboard --live', out: ['<span class="t-ok">✓</span> shipped: neonhud · real-time ops']},
     {cmd: 'vadim automate --lang python --ai', out: ['<span class="t-ok">✓</span> shipped: supportdesk-ai, rick assistant']},
@@ -589,11 +1011,11 @@
       const s = script[li % script.length];
       if (li >= script.length && li % script.length === 0) lines.length = 0;
       let ci = 0;
-      const t = setInterval(() => {
+      const timer = setInterval(() => {
         ci++;
         draw(s.cmd.slice(0, ci));
         if (ci >= s.cmd.length){
-          clearInterval(t);
+          clearInterval(timer);
           setTimeout(() => {
             lines.push(`<div><span class="t-prompt">$</span> ${s.cmd}</div>` + s.out.map(o=>`<div class="t-out">${o}</div>`).join(''));
             if (lines.length > 4) lines.shift();
@@ -607,7 +1029,7 @@
     draw(); setTimeout(typeLine, 600);
   }
 
-  // --- scroll reveal ---
+  /* ---- scroll reveal ---- */
   if (!reduceMotion) {
     document.querySelectorAll('.reveal').forEach((el,i) => {
       el.style.transition = 'opacity .7s ease, transform .7s ease';
@@ -629,6 +1051,13 @@
   } else {
     document.querySelectorAll('.reveal').forEach(el => { el.style.opacity=1; el.style.transform='none'; });
   }
+
+  /* ---- boot: remembered language, else the browser's ---- */
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  if (!saved) saved = (navigator.language || '').toLowerCase().startsWith('ru') ? 'ru' : 'en';
+  setLang(saved);
+})();
 </script>
 
 </body>
