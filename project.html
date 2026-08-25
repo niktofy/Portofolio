@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project | Vadim Melnic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --bg:#090A0F;
+    --surface:rgba(20,25,38,.72);
+    --surface-2:rgba(28,34,50,.82);
+    --line:rgba(255,255,255,.09);
+    --line-strong:rgba(255,255,255,.17);
+    --text:#EDF1F8;
+    --text-2:#A7B0C4;
+    --muted:#818CA3;
+    --accent:#7FA3C4;
+    --accent-soft:rgba(127,163,196,.14);
+    --accent-line:rgba(127,163,196,.4);
+    --radius:14px;
+    --radius-lg:20px;
+    /* legacy aliases */
+    --pink:var(--accent);
+    --cyan:var(--accent);
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:#090A0F; color:var(--text);
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Unbounded',sans-serif; line-height:1.1;}
+  .font-display{font-family:'Unbounded',sans-serif;}
+  .font-mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+  a{color:inherit; text-decoration:none;}
+  .accent-cyan{color:var(--accent);}
+  ::selection{background:var(--accent); color:#090A0F;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:6px;}
+
+  .back-link{
+    font-family:'JetBrains Mono',monospace; font-size:13px;
+    letter-spacing:.04em; color:var(--muted);
+    display:inline-flex; align-items:center; gap:10px;
+    transition:color .2s ease;
+  }
+  .back-link:hover{color:var(--text);}
+
+  /* Left column: cover, then the real screenshots below it */
+  .hero-shot{
+    width:100%; aspect-ratio:16/10; object-fit:cover;
+    background:var(--surface); display:block;
+    border-radius:var(--radius-lg); border:1px solid var(--line);
+  }
+  .thumb-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px;}
+  .thumb{
+    width:100%; aspect-ratio:16/11; object-fit:cover; object-position:top center;
+    background:var(--surface);
+    border-radius:10px; border:1px solid var(--line);
+    display:block; cursor:zoom-in;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .thumb:hover{border-color:var(--accent-line); transform:translateY(-2px);}
+  @media (max-width:520px){ .thumb-grid{grid-template-columns:repeat(2,1fr);} }
+
+  /* Right column */
+  .badge-pill{
+    font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent);
+  }
+  .year-pill{
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted);
+    display:inline-flex; align-items:center; gap:7px;
+  }
+  .section-label{
+    font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--accent);
+    display:flex; align-items:center; gap:10px; margin-bottom:18px;
+  }
+  .section-label::before{content:""; width:20px; height:1px; background:var(--accent); flex:none;}
+  .chip{
+    font-family:'JetBrains Mono',monospace; font-size:12px;
+    border:1px solid var(--line); color:var(--text-2);
+    background:var(--surface); padding:8px 14px; border-radius:8px;
+    display:inline-block;
+  }
+  .btn-primary{
+    background:linear-gradient(90deg, var(--accent), #A6C5DC);
+    box-shadow:0 0 24px rgba(127,163,196,.35);
+    color:#090A0F; font-weight:600; border:1px solid transparent;
+    display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    transition:box-shadow .2s ease, transform .2s ease;
+  }
+  .btn-primary:hover{box-shadow:0 0 36px rgba(127,163,196,.6); transform:translateY(-1px);}
+  .btn-outline{
+    border:1px solid var(--line-strong); color:var(--text);
+    background:transparent; font-weight:500;
+    display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .btn-outline:hover{border-color:var(--accent); background:var(--accent-soft);}
+  .divider{
+    height:1px; border:0; margin:36px 0;
+    background:linear-gradient(90deg, rgba(127,163,196,.45), transparent 78%);
+  }
+
+  .lightbox{
+    position:fixed; inset:0; z-index:80;
+    display:none; align-items:center; justify-content:center; padding:24px;
+    background:rgba(6,8,14,.94); backdrop-filter:blur(8px);
+  }
+  .lightbox[open]{display:flex;}
+  .lightbox img{
+    max-width:min(1200px,100%); max-height:88vh; width:auto; height:auto;
+    object-fit:contain; border-radius:var(--radius); border:1px solid var(--line-strong);
+  }
+  .lightbox-close{
+    position:absolute; top:20px; right:20px;
+    width:42px; height:42px; border-radius:10px;
+    background:var(--surface); border:1px solid var(--line-strong);
+    color:var(--text-2); font-size:18px; line-height:1; cursor:pointer;
+    transition:border-color .2s, color .2s;
+  }
+  .lightbox-close:hover{border-color:var(--accent); color:var(--accent);}
+  @media (prefers-reduced-motion: reduce){
+    *{transition-duration:.01ms !important; animation-duration:.01ms !important;}
+  }
+
+  /* ---------- night sky ----------
+     Three tiled star layers drifting at different speeds. Fixed behind
+     everything, and it stops moving when the visitor asks for less motion. */
+  .sky{position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden;}
+  .sky::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  }
+  .stars,.stars2,.stars3{
+    position:absolute; left:0; right:0; top:0; height:200%;
+    will-change:transform;
+  }
+  .stars{
+    background-image:
+      radial-gradient(1px 1px at 165px 77px, rgba(255,255,255,0.67), transparent),
+      radial-gradient(1px 1px at 24px 37px, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 48px 187px, rgba(255,255,255,0.77), transparent),
+      radial-gradient(1px 1px at 259px 109px, rgba(255,255,255,0.47), transparent),
+      radial-gradient(1px 1px at 222px 214px, rgba(255,255,255,0.49), transparent),
+      radial-gradient(1px 1px at 46px 217px, rgba(255,255,255,0.48), transparent),
+      radial-gradient(1px 1px at 63px 114px, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 31px 203px, rgba(255,255,255,0.48), transparent),
+      radial-gradient(1px 1px at 113px 23px, rgba(255,255,255,0.76), transparent),
+      radial-gradient(1px 1px at 68px 148px, rgba(255,255,255,0.68), transparent),
+      radial-gradient(1px 1px at 60px 157px, rgba(255,255,255,0.76), transparent),
+      radial-gradient(1px 1px at 92px 52px, rgba(255,255,255,0.77), transparent),
+      radial-gradient(1px 1px at 96px 190px, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 32px 30px, rgba(255,255,255,0.79), transparent),
+      radial-gradient(1px 1px at 254px 218px, rgba(255,255,255,0.88), transparent),
+      radial-gradient(1px 1px at 238px 232px, rgba(255,255,255,0.65), transparent),
+      radial-gradient(1px 1px at 127px 92px, rgba(255,255,255,0.83), transparent),
+      radial-gradient(1px 1px at 124px 41px, rgba(255,255,255,0.77), transparent),
+      radial-gradient(1px 1px at 253px 175px, rgba(255,255,255,0.85), transparent),
+      radial-gradient(1px 1px at 147px 37px, rgba(255,255,255,0.51), transparent),
+      radial-gradient(1px 1px at 214px 84px, rgba(255,255,255,0.87), transparent),
+      radial-gradient(1px 1px at 77px 250px, rgba(255,255,255,0.68), transparent),
+      radial-gradient(1px 1px at 39px 160px, rgba(255,255,255,0.64), transparent),
+      radial-gradient(1px 1px at 179px 254px, rgba(255,255,255,0.77), transparent),
+      radial-gradient(1px 1px at 233px 35px, rgba(255,255,255,0.91), transparent),
+      radial-gradient(1px 1px at 138px 242px, rgba(255,255,255,0.83), transparent),
+      radial-gradient(1px 1px at 33px 31px, rgba(255,255,255,0.85), transparent),
+      radial-gradient(1px 1px at 158px 228px, rgba(255,255,255,0.61), transparent),
+      radial-gradient(1px 1px at 197px 177px, rgba(255,255,255,0.46), transparent),
+      radial-gradient(1px 1px at 236px 181px, rgba(255,255,255,0.54), transparent),
+      radial-gradient(1px 1px at 59px 252px, rgba(255,255,255,0.48), transparent),
+      radial-gradient(1px 1px at 147px 66px, rgba(255,255,255,0.86), transparent),
+      radial-gradient(1px 1px at 203px 200px, rgba(255,255,255,0.95), transparent),
+      radial-gradient(1px 1px at 254px 41px, rgba(255,255,255,0.54), transparent),
+      radial-gradient(1px 1px at 205px 142px, rgba(255,255,255,0.94), transparent),
+      radial-gradient(1px 1px at 220px 142px, rgba(255,255,255,0.84), transparent),
+      radial-gradient(1px 1px at 183px 194px, rgba(255,255,255,0.98), transparent),
+      radial-gradient(1px 1px at 77px 42px, rgba(255,255,255,0.55), transparent),
+      radial-gradient(1px 1px at 118px 119px, rgba(255,255,255,0.46), transparent),
+      radial-gradient(1px 1px at 93px 134px, rgba(255,255,255,0.61), transparent),
+      radial-gradient(1px 1px at 74px 214px, rgba(255,255,255,0.74), transparent),
+      radial-gradient(1px 1px at 163px 64px, rgba(255,255,255,0.83), transparent),
+      radial-gradient(1px 1px at 27px 233px, rgba(255,255,255,0.94), transparent),
+      radial-gradient(1px 1px at 200px 203px, rgba(255,255,255,0.67), transparent),
+      radial-gradient(1px 1px at 53px 246px, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 31px 97px, rgba(255,255,255,0.49), transparent);
+    background-size:260px 260px;
+    animation:starDrift 90s linear infinite;
+    opacity:.9;
+  }
+  .stars2{
+    background-image:
+      radial-gradient(2px 2px at 106px 225px, rgba(255,255,255,0.54), transparent),
+      radial-gradient(2px 2px at 174px 307px, rgba(255,255,255,0.48), transparent),
+      radial-gradient(2px 2px at 0px 290px, rgba(255,255,255,0.53), transparent),
+      radial-gradient(2px 2px at 51px 186px, rgba(255,255,255,0.79), transparent),
+      radial-gradient(2px 2px at 36px 106px, rgba(255,255,255,0.79), transparent),
+      radial-gradient(2px 2px at 76px 324px, rgba(255,255,255,0.59), transparent),
+      radial-gradient(2px 2px at 177px 308px, rgba(255,255,255,0.65), transparent),
+      radial-gradient(2px 2px at 62px 59px, rgba(255,255,255,0.92), transparent),
+      radial-gradient(2px 2px at 238px 245px, rgba(255,255,255,0.72), transparent),
+      radial-gradient(2px 2px at 43px 73px, rgba(255,255,255,0.51), transparent),
+      radial-gradient(2px 2px at 175px 379px, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 354px 82px, rgba(255,255,255,0.73), transparent),
+      radial-gradient(2px 2px at 105px 270px, rgba(255,255,255,0.65), transparent),
+      radial-gradient(2px 2px at 353px 278px, rgba(255,255,255,0.95), transparent),
+      radial-gradient(2px 2px at 270px 152px, rgba(255,255,255,0.99), transparent),
+      radial-gradient(2px 2px at 46px 356px, rgba(255,255,255,0.91), transparent),
+      radial-gradient(2px 2px at 265px 187px, rgba(255,255,255,0.95), transparent),
+      radial-gradient(2px 2px at 182px 114px, rgba(255,255,255,0.74), transparent),
+      radial-gradient(2px 2px at 257px 168px, rgba(255,255,255,0.8), transparent),
+      radial-gradient(2px 2px at 313px 99px, rgba(255,255,255,0.89), transparent),
+      radial-gradient(2px 2px at 205px 378px, rgba(255,255,255,0.89), transparent),
+      radial-gradient(2px 2px at 102px 265px, rgba(255,255,255,0.72), transparent),
+      radial-gradient(2px 2px at 374px 14px, rgba(255,255,255,0.99), transparent),
+      radial-gradient(2px 2px at 143px 241px, rgba(255,255,255,0.59), transparent);
+    background-size:380px 380px;
+    animation:starDrift 140s linear infinite;
+    opacity:.75;
+  }
+  .stars3{
+    background-image:
+      radial-gradient(3px 3px at 352px 457px, rgba(255,255,255,0.89), transparent),
+      radial-gradient(3px 3px at 357px 373px, rgba(255,255,255,0.49), transparent),
+      radial-gradient(3px 3px at 104px 232px, rgba(255,255,255,0.71), transparent),
+      radial-gradient(3px 3px at 345px 209px, rgba(255,255,255,0.72), transparent),
+      radial-gradient(3px 3px at 1px 490px, rgba(255,255,255,0.95), transparent),
+      radial-gradient(3px 3px at 352px 86px, rgba(255,255,255,0.91), transparent),
+      radial-gradient(3px 3px at 122px 397px, rgba(255,255,255,0.88), transparent),
+      radial-gradient(3px 3px at 204px 489px, rgba(255,255,255,0.94), transparent),
+      radial-gradient(3px 3px at 444px 340px, rgba(255,255,255,0.5), transparent),
+      radial-gradient(3px 3px at 405px 474px, rgba(255,255,255,0.67), transparent),
+      radial-gradient(3px 3px at 86px 162px, rgba(255,255,255,0.54), transparent),
+      radial-gradient(3px 3px at 130px 28px, rgba(255,255,255,0.53), transparent);
+    background-size:520px 520px;
+    animation:starDrift 210s linear infinite;
+    opacity:.6;
+  }
+  @keyframes starDrift{
+    from{transform:translateY(0);}
+    to{transform:translateY(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stars,.stars2,.stars3{animation:none;}
+  }
+
+  /* ============================================================
+     Depth layer + micro-interactions.
+     Everything here is decorative: it sits behind or on top of
+     content, never in the flow, and it all stops under
+     prefers-reduced-motion.
+     ============================================================ */
+  @property --ang{syntax:'<angle>'; initial-value:0deg; inherits:false;}
+
+  /* ---------- aurora: slow colour drift behind the stars ---------- */
+  .aurora{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden;}
+  .aurora span{
+    position:absolute; display:block; border-radius:50%;
+    filter:blur(100px); opacity:.20; will-change:transform;
+  }
+  .aurora .a1{width:540px; height:540px; background:#7FA3C4; top:-160px; left:-140px; animation:drift1 30s ease-in-out infinite;}
+  .aurora .a2{width:430px; height:430px; background:#4E7BA6; top:40%; right:-160px; animation:drift2 38s ease-in-out infinite;}
+  .aurora .a3{width:480px; height:480px; background:#9DBBD4; bottom:-180px; left:28%; animation:drift3 44s ease-in-out infinite;}
+  @keyframes drift1{50%{transform:translate(90px,70px) scale(1.15);}}
+  @keyframes drift2{50%{transform:translate(-110px,-60px) scale(1.1);}}
+  @keyframes drift3{50%{transform:translate(70px,-90px) scale(1.18);}}
+
+  /* ---------- shooting stars ---------- */
+  .shooting{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden;}
+  .shooting i{
+    position:absolute; width:3px; height:3px; border-radius:50%;
+    background:#fff; box-shadow:0 0 10px 2px rgba(255,255,255,.55);
+    opacity:0; animation:shoot 9s linear infinite;
+  }
+  /* The tail sits behind the head: it trails up-left while the star falls
+     down-right, so the bright dot always leads. */
+  .shooting i::before{
+    content:""; position:absolute; top:50%; right:2px;
+    width:150px; height:1px; transform:translateY(-50%);
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.7));
+  }
+  .shooting .s1{top:-4%; left:16%; animation-delay:2s;}
+  .shooting .s2{top:2%;  left:66%; animation-delay:11s;}
+  .shooting .s3{top:-8%; left:41%; animation-delay:19s;}
+  @keyframes shoot{
+    0%{opacity:0; transform:translate(0,0) rotate(66deg);}
+    3%{opacity:1;}
+    18%{opacity:0; transform:translate(330px,740px) rotate(66deg);}
+    100%{opacity:0; transform:translate(330px,740px) rotate(66deg);}
+  }
+
+  /* ---------- scroll progress rail ---------- */
+  .scroll-rail{
+    position:fixed; top:0; left:0; height:2px; width:0; z-index:70;
+    background:linear-gradient(90deg, var(--accent), #A6C5DC);
+    box-shadow:0 0 12px rgba(127,163,196,.6);
+    pointer-events:none; transition:width .1s linear;
+  }
+
+  /* ---------- cards: cursor spotlight + rotating border ---------- */
+  .project-card, .card, .skill-card, .stat-box{position:relative;}
+  .project-card > *, .card > *, .skill-card > *{position:relative; z-index:1;}
+  .project-card::before, .card::before, .skill-card::before, .stat-box::before{
+    content:""; position:absolute; inset:0; border-radius:inherit; z-index:0;
+    background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),
+               rgba(127,163,196,.15), transparent 62%);
+    opacity:0; transition:opacity .35s ease; pointer-events:none;
+  }
+  .project-card:hover::before, .card:hover::before, .skill-card:hover::before, .stat-box:hover::before{opacity:1;}
+  .project-card::after{
+    content:""; position:absolute; inset:0; border-radius:inherit; padding:1px; z-index:2;
+    background:conic-gradient(from var(--ang), transparent 0%, var(--accent) 10%, transparent 26%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite:exclude;
+    opacity:0; transition:opacity .4s ease; pointer-events:none;
+  }
+  .project-card:hover::after{opacity:1; animation:spinBorder 3.2s linear infinite;}
+  @keyframes spinBorder{to{--ang:360deg;}}
+
+  /* ---------- buttons: light sweeps across on hover ---------- */
+  .btn-primary{position:relative; overflow:hidden;}
+  .btn-primary::after{
+    content:""; position:absolute; top:0; left:-130%; width:55%; height:100%;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.38), transparent);
+    transform:skewX(-22deg); pointer-events:none;
+  }
+  .btn-primary:hover::after{animation:shine .75s ease;}
+  @keyframes shine{to{left:150%;}}
+
+  /* ---------- chips lift slightly ---------- */
+  .pc-chip, .chip{transition:transform .2s ease, border-color .2s ease, color .2s ease;}
+  .chip:hover{transform:translateY(-2px); border-color:var(--accent-line); color:var(--text);}
+
+
+  /* A flat full-width hairline read as a seam across the starfield, so the
+     rule now fades out at both ends and picks up the accent in the middle. */
+  .sec-divide{position:relative;}
+  .sec-divide::before{
+    content:""; position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:min(1120px, 88%); height:1px; pointer-events:none;
+    background:linear-gradient(90deg,
+      transparent, rgba(127,163,196,.10) 18%,
+      rgba(127,163,196,.55) 50%,
+      rgba(127,163,196,.10) 82%, transparent);
+  }
+  .sec-divide::after{
+    content:""; position:absolute; top:-2px; left:50%; transform:translateX(-50%);
+    width:5px; height:5px; border-radius:50%; pointer-events:none;
+    background:var(--accent); box-shadow:0 0 14px 2px rgba(127,163,196,.75);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .aurora span, .shooting i{animation:none;}
+    .shooting{display:none;}
+    .project-card:hover::after{animation:none;}
+    .btn-primary:hover::after{animation:none;}
+  }
+
+  /* ---------- detail page: stats + process ---------- */
+  .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:30px;}
+  .stat-box{
+    padding:16px 14px; border-radius:12px;
+    background:var(--surface); border:1px solid var(--line);
+    transition:border-color .25s ease, transform .25s ease;
+  }
+  .stat-box:hover{border-color:var(--accent-line); transform:translateY(-3px);}
+  .stat-value{
+    font-family:'Unbounded',sans-serif; font-weight:700; font-size:22px;
+    color:var(--accent); line-height:1;
+  }
+  .stat-label{
+    font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted);
+    margin-top:8px; letter-spacing:.05em; line-height:1.35;
+  }
+  @media (max-width:420px){ .stat-value{font-size:18px;} }
+
+  .process-wrap{max-width:860px; margin:0 auto;}
+  .process-step{
+    display:grid; grid-template-columns:auto 1fr; gap:22px;
+    padding-bottom:34px; position:relative;
+  }
+  .process-step:last-child{padding-bottom:0;}
+  .process-step:not(:last-child)::before{
+    content:""; position:absolute; left:21px; top:50px; bottom:-2px; width:1px;
+    background:linear-gradient(180deg, var(--accent-line), transparent);
+  }
+  .process-num{
+    width:43px; height:43px; border-radius:50%; flex:none;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700;
+    color:var(--accent); background:var(--surface);
+    border:1px solid var(--accent-line); position:relative; z-index:1;
+    box-shadow:0 0 22px -8px rgba(127,163,196,.7);
+  }
+  .process-title{
+    font-family:'Unbounded',sans-serif; font-size:16px; font-weight:700;
+    margin-bottom:9px; padding-top:10px;
+  }
+  .process-text{color:var(--muted); font-size:15px; line-height:1.65;}
+
+  /* hero image reacts a little to the pointer */
+  .hero-shot{transition:transform .35s cubic-bezier(.22,1,.36,1), border-color .35s ease;}
+  .hero-wrap:hover .hero-shot{border-color:var(--accent-line);}
+
+  .fade-up{opacity:0; transform:translateY(22px); transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);}
+  .fade-up.in{opacity:1; transform:none;}
+  @media (prefers-reduced-motion: reduce){ .fade-up{opacity:1; transform:none;} }
+</style>
+</head>
+<body>
+
+
+<div class="sky" aria-hidden="true">
+  <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
+</div>
+<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+<div class="shooting" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
+<div class="scroll-rail" id="scroll-rail" aria-hidden="true"></div>
+<div class="max-w-6xl mx-auto px-6 pt-10 pb-8">
+  <a href="index.html" class="back-link" id="back-link">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <span id="back-text">Back to portfolio</span>
+  </a>
+</div>
+
+<main class="max-w-6xl mx-auto px-6 pb-24">
+  <div class="grid lg:grid-cols-2 gap-12 lg:gap-14 items-start">
+
+    <!-- LEFT: hero shot + thumbnails -->
+    <div class="hero-wrap fade-up">
+      <img id="hero-img" class="hero-shot" alt="">
+      <div class="thumb-grid" id="thumb-grid"></div>
+    </div>
+
+    <!-- RIGHT: all the text -->
+    <div>
+      <div class="flex flex-wrap items-center gap-4 mb-6">
+        <span class="badge-pill" id="p-badge"></span>
+        <span class="year-pill">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span id="p-year"></span>
+        </span>
+      </div>
+
+      <h1 class="font-display text-3xl sm:text-4xl font-bold mb-7 leading-tight" id="p-title"></h1>
+
+      <div class="stat-row" id="p-stats"></div>
+
+      <div class="text-[var(--text-2)] leading-relaxed space-y-5" id="p-desc"></div>
+
+      <div class="divider"></div>
+
+      <h2 class="section-label" id="p-stack-label">
+        <span id="p-stack-text"></span>
+      </h2>
+      <div class="flex flex-wrap gap-2.5 mb-9" id="p-chips"></div>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        <a href="#" id="p-live" target="_blank" rel="noopener" class="btn-primary font-medium px-7 py-4 rounded-xl">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
+          <span id="p-live-text"></span>
+        </a>
+        <a href="#" id="p-source" target="_blank" rel="noopener" class="btn-outline font-medium px-7 py-4 rounded-xl">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <span id="p-source-text"></span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <section class="mt-24 fade-up" id="process-section">
+    <div class="process-wrap">
+      <h2 class="section-label"><span id="p-process-text"></span></h2>
+      <div id="p-process" class="mt-8"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="py-8 px-6 text-center font-mono text-xs text-[var(--muted)] sec-divide">
+  © <span id="year"></span> vadim.melnic
+</footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot">
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+  <img id="lightbox-img" alt="">
+</div>
+
+<script src="assets/projects.js?v=2"></script>
+<script>
+(function () {
+  "use strict";
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  let lang = 'en';
+  try { lang = localStorage.getItem('lang') || ((navigator.language||'').toLowerCase().startsWith('ru') ? 'ru' : 'en'); } catch(e){}
+  document.documentElement.lang = lang;
+
+  const params = new URLSearchParams(location.search);
+  const p = PROJECTS[params.get('id')];
+  const u = UI[lang];
+
+  if (!p) {
+    document.querySelector('main').innerHTML = '<p class="text-[var(--muted)]">Project not found.</p>';
+  } else {
+    const title = lang === 'ru' ? p.title.ru : p.title.en;
+    document.title = title + ' | Vadim Melnic';
+    document.getElementById('back-text').textContent = u.back.replace(/^←\s*/, '');
+    const heroImg = document.getElementById('hero-img');
+    heroImg.src = 'assets/' + (p.cover || p.images[0]);
+    heroImg.alt = title;
+    document.getElementById('p-badge').textContent = lang === 'ru' ? p.badge.ru : p.badge.en;
+    document.getElementById('p-year').textContent = p.year;
+    document.getElementById('p-title').textContent = title;
+    document.getElementById('p-desc').innerHTML = (lang === 'ru' ? p.desc.ru : p.desc.en).map(t => '<p>' + t + '</p>').join('');
+    document.getElementById('p-stack-text').textContent = u.stack;
+    document.getElementById('p-chips').innerHTML = p.chips.map(c => '<span class="chip">' + c + '</span>').join('');
+
+    const liveBtn = document.getElementById('p-live');
+    if (p.live) {
+      liveBtn.href = p.live;
+      document.getElementById('p-live-text').textContent = u.live;
+    } else {
+      liveBtn.remove();
+      // With no live link the source button shouldn't sit in half a row.
+      document.getElementById('p-source').parentElement.classList.remove('sm:grid-cols-2');
+    }
+    document.getElementById('p-source').href = p.source;
+    document.getElementById('p-source-text').textContent = u.source;
+
+    // Thumbnails: every shot including the hero, so the hero is reachable too.
+    const grid = document.getElementById('thumb-grid');
+    grid.innerHTML = p.images.map(src =>
+      '<img class="thumb" src="assets/' + src + '" alt="" loading="lazy">'
+    ).join('');
+
+    /* ---- lightbox ---- */
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbClose = document.getElementById('lightbox-close');
+    let lastFocus = null;
+
+    document.querySelectorAll('.thumb').forEach(img => {
+      img.addEventListener('click', () => {
+        lastFocus = document.activeElement;
+        lbImg.src = img.currentSrc || img.src;
+        lb.setAttribute('open', '');
+        document.body.style.overflow = 'hidden';
+        lbClose.focus();
+      });
+    });
+    function closeLb(){
+      lb.removeAttribute('open');
+      lbImg.removeAttribute('src');
+      document.body.style.overflow = '';
+      if (lastFocus) lastFocus.focus();
+    }
+    lbClose.addEventListener('click', closeLb);
+    lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && lb.hasAttribute('open')) closeLb();
+    });
+
+    /* ---- stats: numeric values count up once they scroll into view ---- */
+    document.getElementById('p-stats').innerHTML = (p.stats || []).map(st =>
+      '<div class="stat-box"><div class="stat-value" data-target="' + st.value + '">' + st.value +
+      '</div><div class="stat-label">' + (lang === 'ru' ? st.label.ru : st.label.en) + '</div></div>'
+    ).join('');
+
+    /* ---- process timeline ---- */
+    document.getElementById('p-process-text').textContent = u.process;
+    document.getElementById('p-process').innerHTML = (p.process || []).map((step, i) =>
+      '<div class="process-step">' +
+        '<div class="process-num">' + String(i + 1).padStart(2, '0') + '</div>' +
+        '<div>' +
+          '<h3 class="process-title">' + (lang === 'ru' ? step.title.ru : step.title.en) + '</h3>' +
+          '<p class="process-text">' + (lang === 'ru' ? step.text.ru : step.text.en) + '</p>' +
+        '</div>' +
+      '</div>'
+    ).join('');
+
+    /* ---- reveal on scroll + one count-up per numeric stat ---- */
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealables = [...document.querySelectorAll('.fade-up')];
+    document.querySelectorAll('.stat-box, .process-step').forEach(el => {
+      el.classList.add('fade-up');
+      revealables.push(el);
+    });
+    if (reduce) {
+      revealables.forEach(el => el.classList.add('in'));
+    } else {
+      revealables.forEach((el, i) => { el.style.transitionDelay = Math.min(i, 6) * 70 + 'ms'; });
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('in');
+          obs.unobserve(e.target);
+          const num = e.target.querySelector('.stat-value');
+          if (num) countUp(num);
+        });
+      }, { threshold: .2, rootMargin: '0px 0px -40px 0px' });
+      revealables.forEach(el => io.observe(el));
+      // Anything still hidden after 3s gets shown regardless.
+      setTimeout(() => revealables.forEach(el => el.classList.add('in')), 3000);
+    }
+
+    // Only counts when the value is a plain number; "XP" or "375px" stay as written.
+    function countUp(el){
+      const raw = el.dataset.target || '';
+      if (!/^\d+$/.test(raw)) return;
+      const target = parseInt(raw, 10);
+      if (target === 0) return;
+      const start = performance.now();
+      const dur = 900;
+      (function tick(now){
+        const t = Math.min((now - start) / dur, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3)));
+        if (t < 1) requestAnimationFrame(tick);
+      })(start);
+    }
+
+    /* ---- depth layer: spotlight + scroll rail ---- */
+    document.querySelectorAll('.stat-box').forEach(el => {
+      el.addEventListener('pointermove', ev => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', ((ev.clientX - r.left) / r.width * 100) + '%');
+        el.style.setProperty('--my', ((ev.clientY - r.top) / r.height * 100) + '%');
+      });
+    });
+  }
+
+  const rail = document.getElementById('scroll-rail');
+  function drawRail(){
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    rail.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', drawRail, { passive: true });
+  window.addEventListener('resize', drawRail);
+  drawRail();
+})();
+</script>
+</body>
+</html>
