@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="NeonHUD">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0D1017"/>
+      <stop offset="1" stop-color="#161B27"/>
+    </linearGradient>
+    <radialGradient id="glow4" cx="0.5" cy="0.42" r="0.62">
+      <stop offset="0" stop-color="#7FA3C4" stop-opacity=".13"/>
+      <stop offset="1" stop-color="#7FA3C4" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid4" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#FFFFFF" stroke-opacity=".03" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="750" fill="url(#bg4)"/>
+  <rect width="1200" height="750" fill="url(#grid4)"/>
+  <rect width="1200" height="750" fill="url(#glow4)"/>
+  <g transform="translate(367,239)">
+    <g stroke-width="4">
+      <path d="M28 66v168" stroke="#FFFFFF" stroke-opacity=".3"/><rect x="14" y="96" width="28" height="96" rx="5" fill="#FFFFFF" fill-opacity=".18" stroke="#FFFFFF" stroke-opacity=".3"/>
+      <path d="M110 30v192" stroke="#7FA3C4"/><rect x="96" y="60" width="28" height="126" rx="5" fill="#7FA3C4" fill-opacity=".18" stroke="#7FA3C4"/>
+      <path d="M192 88v152" stroke="#FFFFFF" stroke-opacity=".3"/><rect x="178" y="118" width="28" height="86" rx="5" fill="#FFFFFF" fill-opacity=".18" stroke="#FFFFFF" stroke-opacity=".3"/>
+      <path d="M274 8v212" stroke="#7FA3C4"/><rect x="260" y="38" width="28" height="142" rx="5" fill="#7FA3C4" fill-opacity=".18" stroke="#7FA3C4"/>
+      <path d="M356 74v168" stroke="#FFFFFF" stroke-opacity=".3"/><rect x="342" y="104" width="28" height="98" rx="5" fill="#FFFFFF" fill-opacity=".18" stroke="#FFFFFF" stroke-opacity=".3"/>
+      <path d="M438 44v186" stroke="#7FA3C4"/><rect x="424" y="72" width="28" height="120" rx="5" fill="#7FA3C4" fill-opacity=".18" stroke="#7FA3C4"/>
+    </g>
+    <path d="M0 268h466" stroke="#FFFFFF" stroke-opacity=".12" stroke-width="4"/>
+  </g>
+</svg>

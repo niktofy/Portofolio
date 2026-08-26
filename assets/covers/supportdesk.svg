@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="SupportDesk AI">
+  <defs>
+    <linearGradient id="bg5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0D1017"/>
+      <stop offset="1" stop-color="#161B27"/>
+    </linearGradient>
+    <radialGradient id="glow5" cx="0.5" cy="0.42" r="0.62">
+      <stop offset="0" stop-color="#7FA3C4" stop-opacity=".13"/>
+      <stop offset="1" stop-color="#7FA3C4" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid5" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#FFFFFF" stroke-opacity=".03" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="750" fill="url(#bg5)"/>
+  <rect width="1200" height="750" fill="url(#grid5)"/>
+  <rect width="1200" height="750" fill="url(#glow5)"/>
+  <g transform="translate(326,253)">
+    <path d="M22 0h288a22 22 0 0 1 22 22v148a22 22 0 0 1-22 22H140l-66 52v-52H22A22 22 0 0 1 0 170V22A22 22 0 0 1 22 0Z" fill="#7FA3C4" fill-opacity=".08" stroke="#7FA3C4" stroke-width="4"/>
+    <rect x="48" y="54" width="172" height="13" rx="6.5" fill="#FFFFFF" fill-opacity=".34"/>
+    <rect x="48" y="88" width="230" height="13" rx="6.5" fill="#FFFFFF" fill-opacity=".24"/>
+    <rect x="48" y="122" width="128" height="13" rx="6.5" fill="#7FA3C4"/>
+    <path d="M446 46l19 50 50 19-50 19-19 50-19-50-50-19 50-19Z" fill="#7FA3C4"/>
+    <circle cx="536" cy="182" r="12" fill="#7FA3C4" fill-opacity=".5"/>
+  </g>
+</svg>

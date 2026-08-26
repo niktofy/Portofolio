@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Rick Assistant">
+  <defs>
+    <linearGradient id="bg7" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0D1017"/>
+      <stop offset="1" stop-color="#161B27"/>
+    </linearGradient>
+    <radialGradient id="glow7" cx="0.5" cy="0.42" r="0.62">
+      <stop offset="0" stop-color="#7FA3C4" stop-opacity=".13"/>
+      <stop offset="1" stop-color="#7FA3C4" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid7" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V50" fill="none" stroke="#FFFFFF" stroke-opacity=".03" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="750" fill="url(#bg7)"/>
+  <rect width="1200" height="750" fill="url(#grid7)"/>
+  <rect width="1200" height="750" fill="url(#glow7)"/>
+  <g transform="translate(326,229)">
+    <circle cx="146" cy="146" r="140" fill="none" stroke="#7FA3C4" stroke-opacity=".16" stroke-width="4"/>
+    <circle cx="146" cy="146" r="100" fill="none" stroke="#7FA3C4" stroke-opacity=".34" stroke-width="4"/>
+    <circle cx="146" cy="146" r="60" fill="#7FA3C4" fill-opacity=".12" stroke="#7FA3C4" stroke-width="4"/>
+    <circle cx="146" cy="146" r="19" fill="#7FA3C4"/>
+    <g stroke="#7FA3C4" stroke-width="6" stroke-linecap="round">
+      <path d="M348 112v68"/><path d="M388 76v140"/><path d="M428 112v68"/>
+      <path d="M468 46v200"/><path d="M508 96v100"/><path d="M548 126v40"/>
+    </g>
+  </g>
+</svg>
