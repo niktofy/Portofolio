@@ -127,6 +127,21 @@
     transition:border-color .2s, color .2s;
   }
   .lightbox-close:hover{border-color:var(--accent); color:var(--accent);}
+  .lightbox-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:48px; height:48px; border-radius:50%;
+    background:var(--surface); border:1px solid var(--line-strong);
+    color:var(--text-2); font-size:20px; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color .2s, color .2s;
+  }
+  .lightbox-nav:hover{border-color:var(--accent); color:var(--accent);}
+  .lightbox-nav.prev{left:20px;}
+  .lightbox-nav.next{right:20px;}
+  @media (max-width:640px){
+    .lightbox-nav{width:40px; height:40px; font-size:17px;}
+    .lightbox-nav.prev{left:8px;} .lightbox-nav.next{right:8px;}
+  }
   @media (prefers-reduced-motion: reduce){
     *{transition-duration:.01ms !important; animation-duration:.01ms !important;}
   }
@@ -382,30 +397,6 @@
   }
   @media (max-width:420px){ .stat-value{font-size:18px;} }
 
-  .process-wrap{max-width:860px; margin:0 auto;}
-  .process-step{
-    display:grid; grid-template-columns:auto 1fr; gap:22px;
-    padding-bottom:34px; position:relative;
-  }
-  .process-step:last-child{padding-bottom:0;}
-  .process-step:not(:last-child)::before{
-    content:""; position:absolute; left:21px; top:50px; bottom:-2px; width:1px;
-    background:linear-gradient(180deg, var(--accent-line), transparent);
-  }
-  .process-num{
-    width:43px; height:43px; border-radius:50%; flex:none;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700;
-    color:var(--accent); background:var(--surface);
-    border:1px solid var(--accent-line); position:relative; z-index:1;
-    box-shadow:0 0 22px -8px rgba(127,163,196,.7);
-  }
-  .process-title{
-    font-family:'Unbounded',sans-serif; font-size:16px; font-weight:700;
-    margin-bottom:9px; padding-top:10px;
-  }
-  .process-text{color:var(--muted); font-size:15px; line-height:1.65;}
-
   /* hero image reacts a little to the pointer */
   .hero-shot{transition:transform .35s cubic-bezier(.22,1,.36,1), border-color .35s ease;}
   .hero-wrap:hover .hero-shot{border-color:var(--accent-line);}
@@ -479,12 +470,7 @@
 
   </div>
 
-  <section class="mt-24 fade-up" id="process-section">
-    <div class="process-wrap">
-      <h2 class="section-label"><span id="p-process-text"></span></h2>
-      <div id="p-process" class="mt-8"></div>
-    </div>
-  </section>
+
 </main>
 
 <footer class="py-8 px-6 text-center font-mono text-xs text-[var(--muted)] sec-divide">
@@ -493,7 +479,9 @@
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot">
   <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">✕</button>
+  <button type="button" class="lightbox-nav prev" id="lightbox-prev" aria-label="Previous image">‹</button>
   <img id="lightbox-img" alt="">
+  <button type="button" class="lightbox-nav next" id="lightbox-next" aria-label="Next image">›</button>
 </div>
 
 <script src="assets/projects.js?v=2"></script>
@@ -527,16 +515,23 @@
     document.getElementById('p-chips').innerHTML = p.chips.map(c => '<span class="chip">' + c + '</span>').join('');
 
     const liveBtn = document.getElementById('p-live');
+    const sourceBtn = document.getElementById('p-source');
+    const btnRow = liveBtn.parentElement;
     if (p.live) {
       liveBtn.href = p.live;
-      document.getElementById('p-live-text').textContent = u.live;
+      const liveLabel = p.liveLabel ? (lang === 'ru' ? p.liveLabel.ru : p.liveLabel.en) : u.live;
+      document.getElementById('p-live-text').textContent = liveLabel;
     } else {
       liveBtn.remove();
-      // With no live link the source button shouldn't sit in half a row.
-      document.getElementById('p-source').parentElement.classList.remove('sm:grid-cols-2');
     }
-    document.getElementById('p-source').href = p.source;
-    document.getElementById('p-source-text').textContent = u.source;
+    if (p.source) {
+      sourceBtn.href = p.source;
+      document.getElementById('p-source-text').textContent = u.source;
+    } else {
+      sourceBtn.remove();
+    }
+    // Only one of the two buttons left over: it shouldn't sit in half a row.
+    if (!p.live || !p.source) btnRow.classList.remove('sm:grid-cols-2');
 
     // Thumbnails: every shot including the hero, so the hero is reachable too.
     const grid = document.getElementById('thumb-grid');
@@ -544,16 +539,25 @@
       '<img class="thumb" src="assets/' + src + '" alt="" loading="lazy">'
     ).join('');
 
-    /* ---- lightbox ---- */
+    /* ---- lightbox, with prev/next navigation across all of this project's images ---- */
     const lb = document.getElementById('lightbox');
     const lbImg = document.getElementById('lightbox-img');
     const lbClose = document.getElementById('lightbox-close');
+    const lbPrev = document.getElementById('lightbox-prev');
+    const lbNext = document.getElementById('lightbox-next');
+    const lbImages = p.images.map(src => 'assets/' + src);
+    let lbIndex = 0;
     let lastFocus = null;
+    if (lbImages.length <= 1) { lbPrev.style.display = 'none'; lbNext.style.display = 'none'; }
 
-    document.querySelectorAll('.thumb').forEach(img => {
+    function showLb(i){
+      lbIndex = (i + lbImages.length) % lbImages.length;
+      lbImg.src = lbImages[lbIndex];
+    }
+    document.querySelectorAll('.thumb').forEach((img, i) => {
       img.addEventListener('click', () => {
         lastFocus = document.activeElement;
-        lbImg.src = img.currentSrc || img.src;
+        showLb(i);
         lb.setAttribute('open', '');
         document.body.style.overflow = 'hidden';
         lbClose.focus();
@@ -566,9 +570,14 @@
       if (lastFocus) lastFocus.focus();
     }
     lbClose.addEventListener('click', closeLb);
+    lbPrev.addEventListener('click', () => showLb(lbIndex - 1));
+    lbNext.addEventListener('click', () => showLb(lbIndex + 1));
     lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && lb.hasAttribute('open')) closeLb();
+      if (!lb.hasAttribute('open')) return;
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowLeft') showLb(lbIndex - 1);
+      if (e.key === 'ArrowRight') showLb(lbIndex + 1);
     });
 
     /* ---- stats: numeric values count up once they scroll into view ---- */
@@ -577,22 +586,10 @@
       '</div><div class="stat-label">' + (lang === 'ru' ? st.label.ru : st.label.en) + '</div></div>'
     ).join('');
 
-    /* ---- process timeline ---- */
-    document.getElementById('p-process-text').textContent = u.process;
-    document.getElementById('p-process').innerHTML = (p.process || []).map((step, i) =>
-      '<div class="process-step">' +
-        '<div class="process-num">' + String(i + 1).padStart(2, '0') + '</div>' +
-        '<div>' +
-          '<h3 class="process-title">' + (lang === 'ru' ? step.title.ru : step.title.en) + '</h3>' +
-          '<p class="process-text">' + (lang === 'ru' ? step.text.ru : step.text.en) + '</p>' +
-        '</div>' +
-      '</div>'
-    ).join('');
-
     /* ---- reveal on scroll + one count-up per numeric stat ---- */
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const revealables = [...document.querySelectorAll('.fade-up')];
-    document.querySelectorAll('.stat-box, .process-step').forEach(el => {
+    document.querySelectorAll('.stat-box').forEach(el => {
       el.classList.add('fade-up');
       revealables.push(el);
     });

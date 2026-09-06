@@ -203,6 +203,31 @@ const PROJECTS = {
     chips: ['python','voice-control','speech-recognition','pywebview','automation'],
     images: ['rick2.webp'],
     source: 'https://github.com/niktofy/rick-assistant'
+  },
+  8: {
+    cover: 'cards/vipbar-hero.webp',
+    badge: { en: 'client site', ru: 'клиентский сайт' },
+    year: 2026,
+    title: { en: 'Catering Vip Bar: Booking Site + Self-Serve Admin', ru: 'Catering Vip Bar: сайт-бронирование + админка' },
+    desc: {
+      en: [
+        '<span class="text-white">Challenge:</span> a mobile cocktail-bar business had no site and quoted every event by hand over the phone.',
+        '<span class="text-white">Result:</span> a custom dark-and-amber site with a live pricing calculator (pre-fills a WhatsApp/Viber message) and a <span class="text-white">Supabase-backed admin panel</span> so the owner edits offers, prices and the gallery herself, no code needed. Switches between Romanian and Russian in one click.'
+      ],
+      ru: [
+        '<span class="text-white">Задача:</span> у мобильного коктейль-бара не было сайта, каждое событие оценивалось вручную по телефону.',
+        '<span class="text-white">Результат:</span> авторский сайт в тёмно-янтарной палитре с живым калькулятором цен (готовит сообщение для WhatsApp/Viber) и <span class="text-white">админкой на Supabase</span>, где владелица сама редактирует предложения, цены и галерею, без кода. Переключается между румынским и русским в один клик.'
+      ]
+    },
+    stats: [
+      { value: '2', label: { en: 'languages (RO/RU)', ru: 'языка (RO/RU)' } },
+      { value: '8', label: { en: 'editable price packages', ru: 'редактируемых пакетов цен' } },
+      { value: '1', label: { en: 'click to a WhatsApp/Viber quote', ru: 'клик до заявки в WhatsApp/Viber' } }
+    ],
+    chips: ['web-design','supabase','admin-panel','i18n','vanilla-js','vercel'],
+    images: ['cards/vipbar-hero.webp','cards/vipbar-include.webp','cards/vipbar-calc.webp','cards/vipbar-oferte.webp','cards/vipbar-torta.webp','cards/vipbar-galerie.webp','cards/vipbar-faq.webp'],
+    live: 'https://vipbar.md',
+    liveLabel: { en: 'Visit Site', ru: 'Открыть сайт' }
   }
 };
 
